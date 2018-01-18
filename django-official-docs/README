@@ -1,17 +1,15 @@
-The documentation in this tree is in plain text files and can be viewed using
-any text file viewer.
+这份文档使用了纯文本格式，因此可以使用任何文本文件工具查看。
 
-It uses ReST (reStructuredText) [1], and the Sphinx documentation system [2].
-This allows it to be built into other forms for easier viewing and browsing.
+它使用了ReST (reStructuredText) [1], 以及 Sphinx文档系统[2].
+它使得文档可以被构建成其他的格式以便于浏览。
 
-To create an HTML version of the docs:
+构建HTML文档:
 
-* Install Sphinx (using ``pip install Sphinx`` or some other method)
+* 安装 Sphinx (使用 ``pip install Sphinx`` 命令或者其他方式安装)
 
-* In this docs/ directory, type ``make html`` (or ``make.bat html`` on
-  Windows) at a shell prompt.
+* 跳转到docs/ 目录下，在shell提示符下，输入 ``make html`` (或者Windows下输入 ``make.bat html``) 。（注：实际上在win10下输入``make html``即可）
 
-The documentation in _build/html/index.html can then be viewed in a web browser.
+生成后的文档主页在 _build/html/index.html目录之下，可以在浏览器之下查看。
 
 [1] http://docutils.sourceforge.net/rst.html
 [2] http://sphinx-doc.org/
