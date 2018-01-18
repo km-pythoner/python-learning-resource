@@ -1,79 +1,72 @@
-===================
-Quick install guide
-===================
+============
+快速安装指南
+============
 
-Before you can use Django, you'll need to get it installed. We have a
-:doc:`complete installation guide </topics/install>` that covers all the
-possibilities; this guide will guide you to a simple, minimal installation
-that'll work while you walk through the introduction.
+想要使用Django，先要安装它。 我们提供了一份
+:doc:`complete installation guide </topics/install>`它包含了安装时的所有可能情况；
+这份指南会指导你进行简单、最小化的安装，这在通读介绍时很有用。
 
-Install Python
-==============
+安装Python
+==========
 
-Being a Python Web framework, Django requires Python. See
-:ref:`faq-python-version-support` for details. Python includes a lightweight
-database called SQLite_ so you won't need to set up a database just yet.
+作为一个Python Web 框架，Django依赖Python。 可在
+:ref:`faq-python-version-support` 中查看具体信息。 Python包含了轻量级数据库
+SQLite_，因此不必要创建数据库。
 
-.. _sqlite: https://sqlite.org/
+.. _sqlite相关: https://sqlite.org/
 
-Get the latest version of Python at https://www.python.org/downloads/ or with
-your operating system's package manager.
+从https://www.python.org/downloads/或者你自己操作系统的包管理工具获取最新版本的Python。
 
-You can verify that Python is installed by typing ``python`` from your shell;
-you should see something like::
+在shell下输入 ``python`` 验证Python是否安装：
+顺利的话会出现类似下面的情况::
 
     Python 3.4.x
     [GCC 4.x] on linux
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
 
-Set up a database
-=================
+设置数据库
+==========
 
-This step is only necessary if you'd like to work with a "large" database engine
-like PostgreSQL, MySQL, or Oracle. To install such a database, consult the
+如果不需要诸如PostgreSQL，MySQL，或者Oracle的“大型”数据库，可以跳过这步。
+安装他们请查看：
 :ref:`database installation information <database-installation>`.
 
-Remove any old versions of Django
-=================================
+删除老版本Django
+================
 
-If you are upgrading your installation of Django from a previous version, you
-will need to :ref:`uninstall the old Django version before installing the new
+如果从一个之前的版本对Django进行更新，请参考：ref:`uninstall the old Django version before installing the new
 version <removing-old-versions-of-django>`.
 
-Install Django
-==============
+安装Django
+==========
 
-You've got three easy options to install Django:
+有三种简单方式安装Django：
 
-* :ref:`Install an official release <installing-official-release>`. This
-  is the best approach for most users.
+* :ref:`Install an official release <installing-official-release>`。
+这是大多数用户最好的方式。
 
-* Install a version of Django :ref:`provided by your operating system
+* 安装指定版本Django :ref:`provided by your operating system
   distribution <installing-distribution-package>`.
 
 * :ref:`Install the latest development version
-  <installing-development-version>`. This option is for enthusiasts who want
-  the latest-and-greatest features and aren't afraid of running brand new code.
-  You might encounter new bugs in the development version, but reporting them
-  helps the development of Django. Also, releases of third-party packages are
-  less likely to be compatible with the development version than with the
-  latest stable release.
+  <installing-development-version>`。
+  这种方式适用于无惧bug的发烧友们。
+  在开发版中遇到新的bug,可以向Django报告以帮助Django开发。
+  同时，第三方包也不是很稳定。
 
-.. admonition:: Always refer to the documentation that corresponds to the
-    version of Django you're using!
+.. 警告:: 确保你参考的文档对应当前的Django版本
 
-    If you do either of the first two steps, keep an eye out for parts of the
-    documentation marked **new in development version**. That phrase flags
-    features that are only available in development versions of Django, and
-    they likely won't work with an official release.
+    如果你执行前两步中的任何一个，
+    请留意部分文档中出现的 **开发版新特性**标记，
+    那表示它只是开发版中特性,可能并不会正式发布。
 
 
-Verifying
-=========
+验证
+====
 
-To verify that Django can be seen by Python, type ``python`` from your shell.
-Then at the Python prompt, try to import Django:
+验证Django能被Python感知，在shell中输入 ``python``。
+然后在Python的提示下，尝试引入Django:
 
 .. parsed-literal::
 
@@ -81,9 +74,9 @@ Then at the Python prompt, try to import Django:
     >>> print(django.get_version())
     |version|
 
-You may have another version of Django installed.
+你可能已经安装了另一个版本的Django。
 
-That's it!
-==========
+以上就是本节内容
+===============
 
-That's it -- you can now :doc:`move onto the tutorial </intro/tutorial01>`.
+以上就是本节内容 -- 你现在可以移步：doc:`移步到教程 </intro/tutorial01>`。
