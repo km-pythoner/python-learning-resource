@@ -23,7 +23,7 @@
 
 查看 :doc:`How to install Django </topics/install>` 文档提供了如何卸载老版本的 Django 并安装最新版的方法。
 
-.. 提示:: 在哪里获取帮助信息:
+.. admonition:: 在哪里获取帮助信息:
 
     如果你在使用本教程的过程中碰到困难，请在 |django-users| 写下您的困难，或者到 `#django on irc.freenode.net
     <irc://irc.freenode.net/django>`_ 与其他的 Django users 用户交流，他们或许能够解决您的问题。
@@ -45,19 +45,14 @@
 
     您需要避免使用 Python 或 Django 内部组件的名称来命名您的工程。具体来说，着意味着不要使用诸如  ``django`` (这样的名称和 Django 冲突) 或者 ``test`` (这个会与 Python 内建的包名冲突).
 
-.. 警示:: Where should this code live?
+.. admonition:: Where should this code live?
 
-    If your background is in plain old PHP (with no use of modern frameworks),
-    you're probably used to putting code under the Web server's document root
-    (in a place such as ``/var/www``). With Django, you don't do that. It's
-    not a good idea to put any of this Python code within your Web server's
-    document root, because it risks the possibility that people may be able
-    to view your code over the Web. That's not good for security.
+    如果你有使用早先的纯 PHP 的经验 (现代的框架已经不这么用了)，你可能习惯于把代码放在 Web 服务器的根目录下 (例如 ``/var/www``)。使用 Django 时，您不用这样做。把 Python 代码放在Web服务器的根目录下并不是一个好主意，这样做会让代码通过Web浏览暴露给用户的风险。这是一种不安全的做法。
 
-    Put your code in some directory **outside** of the document root, such as
+    将你的地忙放在文档的根目录 **之外** ，例如
     :file:`/home/mycode`.
 
-Let's look at what :djadmin:`startproject` created::
+让我们来看一下 :djadmin:`startproject` 命令创建了什么::
 
     mysite/
         manage.py
@@ -67,34 +62,22 @@ Let's look at what :djadmin:`startproject` created::
             urls.py
             wsgi.py
 
-These files are:
+这些文件的含义如下：
 
-* The outer :file:`mysite/` root directory is just a container for your
-  project. Its name doesn't matter to Django; you can rename it to anything
-  you like.
+* 最外层 :file:`mysite/` 作为工程的根目录包含了所有的内容。它的名字可以任意命名；您可以把它修改成任何你喜欢的名字。
 
-* :file:`manage.py`: A command-line utility that lets you interact with this
-  Django project in various ways. You can read all the details about
-  :file:`manage.py` in :doc:`/ref/django-admin`.
+* :file:`manage.py`: 一个命令行的工具，通过他你可以使用多种方式操作这个工程。你可以查看所有关于
+  :file:`manage.py` 的信息在 :doc:`/ref/django-admin`里。
 
-* The inner :file:`mysite/` directory is the actual Python package for your
-  project. Its name is the Python package name you'll need to use to import
-  anything inside it (e.g. ``mysite.urls``).
+* 内层 :file:`mysite/` 目录是这个工程的 Python 包。他的名字就是Python 包的名字，你需要使用这个名字来引入她内部的模块(例如 ``mysite.urls``).
 
-* :file:`mysite/__init__.py`: An empty file that tells Python that this
-  directory should be considered a Python package. If you're a Python beginner,
-  read :ref:`more about packages <tut-packages>` in the official Python docs.
+* :file:`mysite/__init__.py`: 一个空的文件，他告诉Python 将这个目录当做一个Python 包来对待。如果您才开始学习 Python ，可以阅读 :ref:`more about packages <tut-packages>` 在官方的 Python 文档中。
 
-* :file:`mysite/settings.py`: Settings/configuration for this Django
-  project.  :doc:`/topics/settings` will tell you all about how settings
-  work.
+* :file:`mysite/settings.py`: 设置/配置这个 Django 工程。  :doc:`/topics/settings` 将会告诉你这些配置如何运作。
 
-* :file:`mysite/urls.py`: The URL declarations for this Django project; a
-  "table of contents" of your Django-powered site. You can read more about
-  URLs in :doc:`/topics/http/urls`.
+* :file:`mysite/urls.py`: Django 工程的 URL 申明；就像一个基于Django技术的网站的 "目录"。您可以获得更多的 URLs 相关的信息从 :doc:`/topics/http/urls`.
 
-* :file:`mysite/wsgi.py`: An entry-point for WSGI-compatible web servers to
-  serve your project. See :doc:`/howto/deployment/wsgi/index` for more details.
+* :file:`mysite/wsgi.py`: 一个为了让你的工程兼容 WSGI web 服务的入口。查阅 :doc:`/howto/deployment/wsgi/index` 可以获知跟多的细节。
 
 The development server
 ======================
