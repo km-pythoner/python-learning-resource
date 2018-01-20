@@ -1,72 +1,51 @@
 =====================================
-Writing your first Django app, part 1
+创作你的第一个 Django app, part 1
 =====================================
 
-Let's learn by example.
+让我们跟着例子学习。
 
-Throughout this tutorial, we'll walk you through the creation of a basic
-poll application.
+完成这个教程，你能够创建一个投票的应用程序。
 
-It'll consist of two parts:
+这个应用程序由一下两个部分组成：
 
-* A public site that lets people view polls and vote in them.
-* An admin site that lets you add, change, and delete polls.
+* 一个提供人们查看选项并进行投票的网站。
+* 一个具备增删改投票选项的后台管理。
 
-We'll assume you have :doc:`Django installed </intro/install>` already. You can
-tell Django is installed and which version by running the following command
-in a shell prompt (indicated by the $ prefix):
+我们假设您已经完成 :doc:`Django installed </intro/install>` 的准备。你可以通过在命令行提示符下运行以下的命来判断你所安装的Django是哪一个版本。 ( $ 符号指明后边根的是命令):
 
 .. code-block:: console
 
     $ python -m django --version
 
-If Django is installed, you should see the version of your installation. If it
-isn't, you'll get an error telling "No module named django".
+如果 Django 已经正确的安装了, 你将能够看到版本信息。否则，你见看到一条错误信息"No module named django"。
 
-This tutorial is written for Django |version|, which supports Python 3.4 and
-later. If the Django version doesn't match, you can refer to the tutorial for
-your version of Django by using the version switcher at the bottom right corner
-of this page, or update Django to the newest version. If you're using an older
-version of Python, check :ref:`faq-python-version-support` to find a compatible
-version of Django.
+本教程对应的 Django 版本是 |version| ，该版本支持 Python 3.4 以及更高的版本。如果 Django 的版本不匹配，你可以通过右下角的版本选线切换到与你的 Django 版本匹配的教程，你也可以将你的 Django 升级到本教程对应的版本。 如果你正在使用较早版本的 Python，可以通过链接 :ref:`faq-python-version-support` 找到与之匹配的 Django 版本。
 
-See :doc:`How to install Django </topics/install>` for advice on how to remove
-older versions of Django and install a newer one.
+查看 :doc:`How to install Django </topics/install>` 文档提供了如何卸载老版本的 Django 并安装最新版的方法。
 
-.. admonition:: Where to get help:
+.. 提示:: 在哪里获取帮助信息:
 
-    If you're having trouble going through this tutorial, please post a message
-    to |django-users| or drop by `#django on irc.freenode.net
-    <irc://irc.freenode.net/django>`_ to chat with other Django users who might
-    be able to help.
+    如果你在使用本教程的过程中碰到困难，请在 |django-users| 写下您的困难，或者到 `#django on irc.freenode.net
+    <irc://irc.freenode.net/django>`_ 与其他的 Django users 用户交流，他们或许能够解决您的问题。
 
-Creating a project
+创建一个工程
 ==================
 
-If this is your first time using Django, you'll have to take care of some
-initial setup. Namely, you'll need to auto-generate some code that establishes a
-Django :term:`project` -- a collection of settings for an instance of Django,
-including database configuration, Django-specific options and
-application-specific settings.
+如果这是你第一次使用 Django, 您最好在做初始化步骤的时候多花点心思。 也就是说。 你将会使用到一些自动生成的功能来创建一个 Django :term:`project` -- 为一个 Django 实例进行一些列的设置，包括数据库配置，Django的说明性的选项以及应用程序级的一些配置。
 
-From the command line, ``cd`` into a directory where you'd like to store your
-code, then run the following command:
+通过命令行工具, ``cd`` 进入一个你打算用来存放胆码的目录，然后执行以下的命令：
 
 .. code-block:: console
 
    $ django-admin startproject mysite
 
-This will create a ``mysite`` directory in your current directory. If it didn't
-work, see :ref:`troubleshooting-django-admin`.
+这个命令将会在当前目录创建一个 ``mysite`` 文件夹。如果没有，请查看 :ref:`troubleshooting-django-admin`.
 
 .. note::
 
-    You'll need to avoid naming projects after built-in Python or Django
-    components. In particular, this means you should avoid using names like
-    ``django`` (which will conflict with Django itself) or ``test`` (which
-    conflicts with a built-in Python package).
+    您需要避免使用 Python 或 Django 内部组件的名称来命名您的工程。具体来说，着意味着不要使用诸如  ``django`` (这样的名称和 Django 冲突) 或者 ``test`` (这个会与 Python 内建的包名冲突).
 
-.. admonition:: Where should this code live?
+.. 警示:: Where should this code live?
 
     If your background is in plain old PHP (with no use of modern frameworks),
     you're probably used to putting code under the Web server's document root
