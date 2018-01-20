@@ -79,17 +79,16 @@
 
 * :file:`mysite/wsgi.py`: 一个为了让你的工程兼容 WSGI web 服务的入口。查阅 :doc:`/howto/deployment/wsgi/index` 可以获知跟多的细节。
 
-The development server
+开发服务器
 ======================
 
-Let's verify your Django project works. Change into the outer :file:`mysite` directory, if
-you haven't already, and run the following commands:
+让我们验证一下 Django 工程是否能正常工作。切换到最层 :file:`mysite` 目录下，如果你还没准备好工程，那么闲执行一下的命令：
 
 .. code-block:: console
 
    $ python manage.py runserver
 
-You'll see the following output on the command line:
+你将会在命令行看到一下的输出：
 
 .. parsed-literal::
 
@@ -106,53 +105,36 @@ You'll see the following output on the command line:
     Quit the server with CONTROL-C.
 
 .. note::
-    Ignore the warning about unapplied database migrations for now; we'll deal
-    with the database shortly.
+    目前，请先忽略未执行数据库迁移的警告信息；稍后我们将处理数据库的的问题。
 
-You've started the Django development server, a lightweight Web server written
-purely in Python. We've included this with Django so you can develop things
-rapidly, without having to deal with configuring a production server -- such as
-Apache -- until you're ready for production.
+你已经启动对了 Django 开发服务器，一个纯 Python 书写的轻量级 Web 服务器。我们将这个服务器包含在 Django 中一遍你能够快速投入到开发工作，而不用去配置一个身穿环境——例如 Apache ——除非你已经有了一个生产环境。
 
-Now's a good time to note: **don't** use this server in anything resembling a
-production environment. It's intended only for use while developing. (We're in
-the business of making Web frameworks, not Web servers.)
+现在正是给您一些提示的好时机: **千万别** 把这个web服务用于生产环境。 它仅仅是为了给您提供给开发时的方便。 (我们的强项是做 Web 开发框架，而不是 Web 服务器，你懂的。)
 
-Now that the server's running, visit http://127.0.0.1:8000/ with your Web
-browser. You'll see a "Congratulations!" page, with a rocket taking off.
+现在服务器已经运行起来了，通过浏览器访问 http://127.0.0.1:8000/ 。您将会看到"Congratulations!" 页面， 上边有一个正在发射的火箭。
 It worked!
 
-.. admonition:: Changing the port
+.. admonition:: 更改端口号
 
-    By default, the :djadmin:`runserver` command starts the development server
-    on the internal IP at port 8000.
+    默认情况下， :djadmin:`runserver` 命令将在一个内部IP的8000端口上启动开发服务器。
 
-    If you want to change the server's port, pass
-    it as a command-line argument. For instance, this command starts the server
-    on port 8080:
+    如果你想更改这个端口，可以通过命令行参数的方式。例如，下班的这条命令就将让服务在8080端口启动：
 
     .. code-block:: console
 
         $ python manage.py runserver 8080
 
-    If you want to change the server's IP, pass it along with the port. For
-    example, to listen on all available public IPs (which is useful if you are
-    running Vagrant or want to show off your work on other computers on the
-    network), use:
+    如果你想要修改服务器的IP地址，可以和修改端口一块进行。例如，要接受所有的IP进行访问(这个在您需要更换运行的计算机或者需要在其他联网的计算机上展示您的国祚成果时特别有用), 使用如下命令:
 
     .. code-block:: console
 
         $ python manage.py runserver 0:8000
 
-    **0** is a shortcut for **0.0.0.0**. Full docs for the development server
-    can be found in the :djadmin:`runserver` reference.
+    **0** 是对 **0.0.0.0**的简写形式。开发服务器的完整文档可以在 :djadmin:`runserver` 找到。
 
-.. admonition:: Automatic reloading of :djadmin:`runserver`
+.. admonition:: 自动加载 :djadmin:`runserver`
 
-    The development server automatically reloads Python code for each request
-    as needed. You don't need to restart the server for code changes to take
-    effect. However, some actions like adding files don't trigger a restart,
-    so you'll have to restart the server in these cases.
+    开发服务器会在需要时自动加载 Pyhton 代码。当您修改了代码之后您不需要重启 Web 服务器。然而，想增加文件这样的操作并不会出发自动加载，所有这是你需要手动的重启一下服务一遍加载新增的文件。
 
 Creating the Polls app
 ======================
