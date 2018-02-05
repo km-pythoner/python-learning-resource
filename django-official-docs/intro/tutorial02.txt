@@ -1,28 +1,23 @@
+
 =====================================
-Writing your first Django app, part 2
+创作你的第一个 Django app, part 2
 =====================================
 
-This tutorial begins where :doc:`Tutorial 1 </intro/tutorial01>` left off.
-We'll setup the database, create your first model, and get a quick introduction
-to Django's automatically-generated admin site.
+本教程紧接 :doc:`Tutorial 1 </intro/tutorial01>` 之后。
+我们将设置数据库，创建第一个model，并且对Django自动生成admin站点做简短介绍。
 
-Database setup
+数据库设置
 ==============
 
-Now, open up :file:`mysite/settings.py`. It's a normal Python module with
-module-level variables representing Django settings.
+现在，打开 :file:`mysite/settings.py`。它是一个表示Django设置的带模块级变量的普通Python模块。
 
-By default, the configuration uses SQLite. If you're new to databases, or
-you're just interested in trying Django, this is the easiest choice. SQLite is
-included in Python, so you won't need to install anything else to support your
-database. When starting your first real project, however, you may want to use a
-more scalable database like PostgreSQL, to avoid database-switching headaches
-down the road.
+缺省情况下的配置使用SQLite数据库。如果你对数据库不熟悉，或者只是想尝试一下Django，
+它就是最省力的选择。SQLite包含在Python中，因此不需要再安装其它代码库以支持数据库。
+然而，当启动一个真实项目，你需要一个伸缩性更好的数据库比如PostgreSQL，用以避免数据库切换的困扰。
 
-If you wish to use another database, install the appropriate :ref:`database
-bindings <database-installation>` and change the following keys in the
-:setting:`DATABASES` ``'default'`` item to match your database connection
-settings:
+如果希望采用非SQLite数据库，安装合适的 :ref:`database
+bindings <database-installation>` 并修改
+:setting:`DATABASES` ``'default'`` 配置项中下面的键以适配数据库连接：
 
 * :setting:`ENGINE <DATABASE-ENGINE>` -- Either
   ``'django.db.backends.sqlite3'``,
@@ -31,15 +26,13 @@ settings:
   ``'django.db.backends.oracle'``. Other backends are :ref:`also available
   <third-party-notes>`.
 
-* :setting:`NAME` -- The name of your database. If you're using SQLite, the
-  database will be a file on your computer; in that case, :setting:`NAME`
-  should be the full absolute path, including filename, of that file. The
-  default value, ``os.path.join(BASE_DIR, 'db.sqlite3')``, will store the file
-  in your project directory.
+* :setting:`NAME` -- 数据库名称。如果使用SQLite，数据库将会是你电脑中的一个文件；
+  那样的话， :setting:`NAME`应该是全路径的绝对地址，包括文件名称。
+  缺省值 ``os.path.join(BASE_DIR, 'db.sqlite3')``的设置将文件存储在工程路径下。
 
-If you are not using SQLite as your database, additional settings such as
-:setting:`USER`, :setting:`PASSWORD`, and :setting:`HOST` must be added.
-For more details, see the reference documentation for :setting:`DATABASES`.
+如果不使用SQLite作为项目的数据库，需要添加诸如：
+:setting:`USER`, :setting:`PASSWORD`, and :setting:`HOST`的附加设置。
+更多详情见 :setting:`DATABASES`.
 
 .. admonition:: For databases other than SQLite
 
@@ -55,48 +48,39 @@ For more details, see the reference documentation for :setting:`DATABASES`.
     If you're using SQLite, you don't need to create anything beforehand - the
     database file will be created automatically when it is needed.
 
-While you're editing :file:`mysite/settings.py`, set :setting:`TIME_ZONE` to
-your time zone.
+当编辑 :file:`mysite/settings.py`时，设置 :setting:`TIME_ZONE` 为你的时区。
 
-Also, note the :setting:`INSTALLED_APPS` setting at the top of the file. That
-holds the names of all Django applications that are activated in this Django
-instance. Apps can be used in multiple projects, and you can package and
-distribute them for use by others in their projects.
+同时，注意文件顶部的 :setting:`INSTALLED_APPS`设置。它放置了该Django实例下的
+所有Django应用名。Apps可以用在多个工程中，可以打包并分发它们供他人使用。
 
-By default, :setting:`INSTALLED_APPS` contains the following apps, all of which
-come with Django:
+缺省情况下， :setting:`INSTALLED_APPS` 包含了如下的apps， 它们全部来自Django：
 
-* :mod:`django.contrib.admin` -- The admin site. You'll use it shortly.
+* :mod:`django.contrib.admin` -- 管理站点。很快就会用到它。
 
-* :mod:`django.contrib.auth` -- An authentication system.
+* :mod:`django.contrib.auth` -- 认证系统
 
-* :mod:`django.contrib.contenttypes` -- A framework for content types.
+* :mod:`django.contrib.contenttypes` -- 内容类型框架
 
-* :mod:`django.contrib.sessions` -- A session framework.
+* :mod:`django.contrib.sessions` -- session框架
 
-* :mod:`django.contrib.messages` -- A messaging framework.
+* :mod:`django.contrib.messages` -- 消息框架
 
-* :mod:`django.contrib.staticfiles` -- A framework for managing
-  static files.
+* :mod:`django.contrib.staticfiles` -- 管理静态类型文件框架
 
-These applications are included by default as a convenience for the common case.
+缺省情况下已经包含了这些应用，以便于应对多数场景。
 
-Some of these applications make use of at least one database table, though,
-so we need to create the tables in the database before we can use them. To do
-that, run the following command:
+这些应用中的一部分使用了至少一张数据库表，因此我们需要在数据库中创建数据库表。
+为了达到目的，运行下面的命令：
 
 .. code-block:: console
 
     $ python manage.py migrate
 
-The :djadmin:`migrate` command looks at the :setting:`INSTALLED_APPS` setting
-and creates any necessary database tables according to the database settings
-in your :file:`mysite/settings.py` file and the database migrations shipped
-with the app (we'll cover those later). You'll see a message for each
-migration it applies. If you're interested, run the command-line client for your
-database and type ``\dt`` (PostgreSQL), ``SHOW TABLES;`` (MySQL), ``.schema``
-(SQLite), or ``SELECT TABLE_NAME FROM USER_TABLES;`` (Oracle) to display the
-tables Django created.
+:djadmin:`migrate` 命令按照 :setting:`INSTALLED_APPS` 设置
+并根据:file:`mysite/settings.py` 中的配置创建和更改必要的数据库表（之后会讲到）。
+运行后能看到该命令运行并起效的信息。
+如果感兴趣，运行你数据库的命令行客户端并输入 ``\dt`` (PostgreSQL), ``SHOW TABLES;`` (MySQL), ``.schema``
+(SQLite), or ``SELECT TABLE_NAME FROM USER_TABLES;`` (Oracle) 以显示Django'创建的数据库表。
 
 .. admonition:: For the minimalists
 
@@ -109,11 +93,10 @@ tables Django created.
 
 .. _creating-models:
 
-Creating models
+创建模型
 ===============
 
-Now we'll define your models -- essentially, your database layout, with
-additional metadata.
+现在我们将定义模型 -- 实质上就是数据库结构，和附加的源数据。
 
 .. admonition:: Philosophy
 
@@ -127,13 +110,12 @@ additional metadata.
    history that Django can roll through to update your database schema to
    match your current models.
 
-In our simple poll app, we'll create two models: ``Question`` and ``Choice``.
-A ``Question`` has a question and a publication date. A ``Choice`` has two
-fields: the text of the choice and a vote tally. Each ``Choice`` is associated
-with a ``Question``.
+在我们简单的poll app中，将创建两个模型： ``Question`` 和 ``Choice``。
+``Question`` 拥有question 和 publication date两个字段。 ``Choice`` 拥有两个字段：
+选择的文本和对应的投票。 每一个``Choice`` 关联一个``Question``。
 
-These concepts are represented by simple Python classes. Edit the
-:file:`polls/models.py` file so it looks like this:
+这些概念使用简单的Python类表达。如下编辑
+:file:`polls/models.py` 文件：
 
 .. snippet::
     :filename: polls/models.py
@@ -151,65 +133,59 @@ These concepts are represented by simple Python classes. Edit the
         choice_text = models.CharField(max_length=200)
         votes = models.IntegerField(default=0)
 
-The code is straightforward. Each model is represented by a class that
-subclasses :class:`django.db.models.Model`. Each model has a number of class
-variables, each of which represents a database field in the model.
+代码直来直去。每一个模型都通过继承类:class:`django.db.models.Model`来表示。
+ 每个模型都有一些类变量，它们各自代表了数据库的一个字段。
 
-Each field is represented by an instance of a :class:`~django.db.models.Field`
-class -- e.g., :class:`~django.db.models.CharField` for character fields and
-:class:`~django.db.models.DateTimeField` for datetimes. This tells Django what
-type of data each field holds.
+每一个字段都被表示为一个:class:`~django.db.models.Field`
+类 -- 比如, :class:`~django.db.models.CharField` 代表字符型，
+:class:`~django.db.models.DateTimeField` 代表DateTime型。
+这（就能）告诉Django各字段分别是什么类型。
 
-The name of each :class:`~django.db.models.Field` instance (e.g.
-``question_text`` or ``pub_date``) is the field's name, in machine-friendly
-format. You'll use this value in your Python code, and your database will use
-it as the column name.
+每一个 :class:`~django.db.models.Field` 实例的名称(e.g.
+``question_text`` or ``pub_date``) 就是域的名称，使用机器友好的格式。
+你将在Python代码中使用这个值，并且数据库中也使用它作为列名。
 
-You can use an optional first positional argument to a
-:class:`~django.db.models.Field` to designate a human-readable name. That's used
-in a couple of introspective parts of Django, and it doubles as documentation.
-If this field isn't provided, Django will use the machine-readable name. In this
-example, we've only defined a human-readable name for ``Question.pub_date``.
-For all other fields in this model, the field's machine-readable name will
-suffice as its human-readable name.
+你可以通过为:class:`~django.db.models.Field` 类在
+（构造函数的）第一位置指定可选的别名参数以便人类阅读。
+这在Django中一些涉及内省的地方使用过，而且它也可以作为文档来使用。
+如果这个域（参数）没有被提供，Django将使用机器可读的名称。
+在本文的例子中，我们已经切仅为``Question.pub_date``定义了一个人类可读的名称。
+对于其他的模型中的域，它们的机器可读的名称满足作为人类可读名称的作用。
 
-Some :class:`~django.db.models.Field` classes have required arguments.
-:class:`~django.db.models.CharField`, for example, requires that you give it a
-:attr:`~django.db.models.CharField.max_length`. That's used not only in the
-database schema, but in validation, as we'll soon see.
 
-A :class:`~django.db.models.Field` can also have various optional arguments; in
-this case, we've set the :attr:`~django.db.models.Field.default` value of
-``votes`` to 0.
+一些 :class:`~django.db.models.Field` 类有必填参数。
+比如:class:`~django.db.models.CharField`, 它需要给出属性
+:attr:`~django.db.models.CharField.max_length`。它不仅仅用在数据库的格式中，
+也用在字段验证中，正如我们将要看到的那样。
 
-Finally, note a relationship is defined, using
-:class:`~django.db.models.ForeignKey`. That tells Django each ``Choice`` is
-related to a single ``Question``. Django supports all the common database
-relationships: many-to-one, many-to-many, and one-to-one.
+:class:`~django.db.models.Field`类同时也能拥有各种各样的可选参数：
+在这个例子中，我们设置了``votes``的:attr:`~django.db.models.Field.default` 值为0。
 
-Activating models
+最后，注意我们已经定义了一种关系，使用
+:class:`~django.db.models.ForeignKey`。
+这告诉Django每一个``Choice``对应一个单独的``Question``类。
+Django支持所有数据库表对应关系：many-to-one, many-to-many, 以及one-to-one。
+
+激活模型
 =================
 
-That small bit of model code gives Django a lot of information. With it, Django
-is able to:
+上面的少数代码给了Django不少的信息。使用他们，Django可以做到：
 
-* Create a database schema (``CREATE TABLE`` statements) for this app.
-* Create a Python database-access API for accessing ``Question`` and ``Choice`` objects.
+* 构造数据库表结构 (``CREATE TABLE`` statements)。
+* 构造基于Python的数据库访问API以访问：``Question``和``Choice`` 对象。
 
-But first we need to tell our project that the ``polls`` app is installed.
+但首先我们得先告诉工程``polls`` app安装在哪里。
 
-.. admonition:: Philosophy
+.. admonition:: 哲学
 
-    Django apps are "pluggable": You can use an app in multiple projects, and
-    you can distribute apps, because they don't have to be tied to a given
-    Django installation.
+    Django apps是“插件化的”：你可以在不同的工程中使用同一个app，而且可以分发app们，
+    因为它们不必绑定到给定的Django安装。
 
-To include the app in our project, we need to add a reference to its
-configuration class in the :setting:`INSTALLED_APPS` setting. The
-``PollsConfig`` class is in the :file:`polls/apps.py` file, so its dotted path
-is ``'polls.apps.PollsConfig'``. Edit the :file:`mysite/settings.py` file and
-add that dotted path to the :setting:`INSTALLED_APPS` setting. It'll look like
-this:
+为了将这个app包含到你的工程中，我们需要将配置类的引用加入到:setting:`INSTALLED_APPS` 设置中。
+``PollsConfig`` 类在:file:`polls/apps.py` 文件中，所以它的点号路径就是：
+``'polls.apps.PollsConfig'``。 编辑 :file:`mysite/settings.py` 文件并将点号路径加入到
+:setting:`INSTALLED_APPS` 设置中。就像这样：
+
 
 .. snippet::
     :filename: mysite/settings.py
@@ -224,13 +200,13 @@ this:
         'django.contrib.staticfiles',
     ]
 
-Now Django knows to include the ``polls`` app. Let's run another command:
+现在Django知道需要包含``polls`` app了，让我们运行另外一个命令：
 
 .. code-block:: console
 
     $ python manage.py makemigrations polls
 
-You should see something similar to the following:
+你将看到类似于下面的内容：
 
 .. code-block:: text
 
@@ -240,9 +216,8 @@ You should see something similar to the following:
         - Create model Question
         - Add field question to choice
 
-By running ``makemigrations``, you're telling Django that you've made
-some changes to your models (in this case, you've made new ones) and that
-you'd like the changes to be stored as a *migration*.
+通过运行``makemigrations``命令，等于是告诉Django你的模型产生了变化（本例中是新建了两张表）
+且你希望这些变化通过*migration*保存。
 
 Migrations are how Django stores changes to your models (and thus your
 database schema) - they're just files on disk. You can read the migration
