@@ -219,24 +219,21 @@ Django支持所有数据库表对应关系：many-to-one, many-to-many, 以及on
 通过运行``makemigrations``命令，等于是告诉Django你的模型产生了变化（本例中是新建了两张表）
 且你希望这些变化通过*migration*保存。
 
-Migrations are how Django stores changes to your models (and thus your
-database schema) - they're just files on disk. You can read the migration
-for your new model if you like; it's the file
-``polls/migrations/0001_initial.py``. Don't worry, you're not expected to read
-them every time Django makes one, but they're designed to be human-editable
-in case you want to manually tweak how Django changes things.
+迁移（文件）就是Django如何存储模型的改动(例如数据库模型) -它们仅仅是硬盘上的文件。
+如果需要，可以阅读新模型的迁移（文件）。它就是文件
+``polls/migrations/0001_initial.py``。
+别担心，不需要每次Django创建它们时都阅读，但它们被设计成人类可读的，
+以防你想要对它们进行微调。
 
-There's a command that will run the migrations for you and manage your database
-schema automatically - that's called :djadmin:`migrate`, and we'll come to it in a
-moment - but first, let's see what SQL that migration would run. The
-:djadmin:`sqlmigrate` command takes migration names and returns their SQL:
+有一个命令用于运行迁移并并自动管理数据库模式- 那就是 :djadmin:`migrate`，
+我们稍后再研究它 - 在这之前，让我们先看看那次迁移会运行什么SQL。
+:djadmin:`sqlmigrate` 命令获取了迁移名称并返回它们的SQL：
 
 .. code-block:: console
 
     $ python manage.py sqlmigrate polls 0001
 
-You should see something similar to the following (we've reformatted it for
-readability):
+你将能看到类似下面的内容（我们已经重新排版便于阅读）：
 
 .. code-block:: sql
 
@@ -271,7 +268,7 @@ readability):
 
     COMMIT;
 
-Note the following:
+注意接下来：
 
 * The exact output will vary depending on the database you are using. The
   example above is generated for PostgreSQL.
