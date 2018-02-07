@@ -98,7 +98,7 @@
 
     You have unapplied migrations; your app may not work properly until they are applied.
     Run 'python manage.py migrate' to apply them.
-
+    
     |today| - 15:50:53
     Django version |version|, using settings 'mysite.settings'
     Starting development server at http://127.0.0.1:8000/
@@ -136,38 +136,26 @@ It worked!
 
     开发服务器会在需要时自动加载 Pyhton 代码。当您修改了代码之后您不需要重启 Web 服务器。然而，想增加文件这样的操作并不会出发自动加载，所有这是你需要手动的重启一下服务一遍加载新增的文件。
 
-Creating the Polls app
+创建Polls（投票）app
 ======================
 
-Now that your environment -- a "project" -- is set up, you're set to start
-doing work.
+现在你的开发环境 -- 一个 "项目" -- 已经准备好了，你现在就可以开始开发了。
 
-Each application you write in Django consists of a Python package that follows
-a certain convention. Django comes with a utility that automatically generates
-the basic directory structure of an app, so you can focus on writing code
-rather than creating directories.
+你在 Django 下开发的每一个项目，都是有一些列的Python包构成，这些包都遵循一写习惯用法。 Django 使用自动生成的方式来为你要开发的应用创建这些目录结构,这样你边可以专注在代码的编写上而不用做这些杂事。
 
-.. admonition:: Projects vs. apps
+.. admonition:: 工程 vs. 应用
 
-    What's the difference between a project and an app? An app is a Web
-    application that does something -- e.g., a Weblog system, a database of
-    public records or a simple poll app. A project is a collection of
-    configuration and apps for a particular website. A project can contain
-    multiple apps. An app can be in multiple projects.
+    工程（project）与应用（app）之间有什么区别呢？应用是一个 Web 的应用程序例如：一个 web 的日志系统、一个公共记录的应用或者一个投票应用。一个工程是一个集合了一系列应用的网站。一个工程可以包含多个应用。一个应用也可以放到多个工程中。
 
-Your apps can live anywhere on your :ref:`Python path <tut-searchpath>`. In
-this tutorial, we'll create our poll app right next to your :file:`manage.py`
-file so that it can be imported as its own top-level module, rather than a
-submodule of ``mysite``.
+你的应用可以放在 :ref:`Python path <tut-searchpath>`路径下的任何地方。本教程中,我们会创建投票应用，并建立 :file:`manage.py`文件，这样她便可以在我们的顶层模块中被引用。而不是在 ``mysite``的子模块中引用。
 
-To create your app, make sure you're in the same directory as :file:`manage.py`
-and type this command:
+为了你能够顺利创建应用，请确定命令行的当前路径与:file:`manage.py`文件的路径相同，然后输入一下的命令：
 
 .. code-block:: console
 
     $ python manage.py startapp polls
 
-That'll create a directory :file:`polls`, which is laid out like this::
+这条命令将会创建一个文件夹 :file:`polls`，文件夹查看的结构如下所示::
 
     polls/
         __init__.py
@@ -179,9 +167,9 @@ That'll create a directory :file:`polls`, which is laid out like this::
         tests.py
         views.py
 
-This directory structure will house the poll application.
+这个文件夹就用于存放投票应用的所有相关内容。
 
-Write your first view
+编写你的第一个视图
 =====================
 
 Let's write the first view. Open the file ``polls/views.py``
@@ -235,7 +223,7 @@ The next step is to point the root URLconf at the ``polls.urls`` module. In
 
     from django.urls import include, path
     from django.contrib import admin
-
+    
     urlpatterns = [
         path('polls/', include('polls.urls')),
         path('admin/', admin.site.urls),
