@@ -1,84 +1,58 @@
 =====================================
-Writing your first Django app, part 1
+创作你的第一个 Django app, part 1
 =====================================
 
-Let's learn by example.
+让我们跟着例子学习。
 
-Throughout this tutorial, we'll walk you through the creation of a basic
-poll application.
+完成这个教程，你能够创建一个投票的应用程序。
 
-It'll consist of two parts:
+这个应用程序由一下两个部分组成：
 
-* A public site that lets people view polls and vote in them.
-* An admin site that lets you add, change, and delete polls.
+* 一个提供人们查看选项并进行投票的网站。
+* 一个具备增删改投票选项的后台管理。
 
-We'll assume you have :doc:`Django installed </intro/install>` already. You can
-tell Django is installed and which version by running the following command
-in a shell prompt (indicated by the $ prefix):
+我们假设您已经完成 :doc:`Django installed </intro/install>` 的准备。你可以通过在命令行提示符下运行以下的命来判断你所安装的Django是哪一个版本。 ( $ 符号指明后边根的是命令):
 
 .. code-block:: console
 
     $ python -m django --version
 
-If Django is installed, you should see the version of your installation. If it
-isn't, you'll get an error telling "No module named django".
+如果 Django 已经正确的安装了, 你将能够看到版本信息。否则，你见看到一条错误信息"No module named django"。
 
-This tutorial is written for Django |version|, which supports Python 3.4 and
-later. If the Django version doesn't match, you can refer to the tutorial for
-your version of Django by using the version switcher at the bottom right corner
-of this page, or update Django to the newest version. If you're using an older
-version of Python, check :ref:`faq-python-version-support` to find a compatible
-version of Django.
+本教程对应的 Django 版本是 |version| ，该版本支持 Python 3.4 以及更高的版本。如果 Django 的版本不匹配，你可以通过右下角的版本选线切换到与你的 Django 版本匹配的教程，你也可以将你的 Django 升级到本教程对应的版本。 如果你正在使用较早版本的 Python，可以通过链接 :ref:`faq-python-version-support` 找到与之匹配的 Django 版本。
 
-See :doc:`How to install Django </topics/install>` for advice on how to remove
-older versions of Django and install a newer one.
+查看 :doc:`How to install Django </topics/install>` 文档提供了如何卸载老版本的 Django 并安装最新版的方法。
 
-.. admonition:: Where to get help:
+.. admonition:: 在哪里获取帮助信息:
 
-    If you're having trouble going through this tutorial, please post a message
-    to |django-users| or drop by `#django on irc.freenode.net
-    <irc://irc.freenode.net/django>`_ to chat with other Django users who might
-    be able to help.
+    如果你在使用本教程的过程中碰到困难，请在 |django-users| 写下您的困难，或者到 `#django on irc.freenode.net
+    <irc://irc.freenode.net/django>`_ 与其他的 Django users 用户交流，他们或许能够解决您的问题。
 
-Creating a project
+创建一个工程
 ==================
 
-If this is your first time using Django, you'll have to take care of some
-initial setup. Namely, you'll need to auto-generate some code that establishes a
-Django :term:`project` -- a collection of settings for an instance of Django,
-including database configuration, Django-specific options and
-application-specific settings.
+如果这是你第一次使用 Django, 您最好在做初始化步骤的时候多花点心思。 也就是说。 你将会使用到一些自动生成的功能来创建一个 Django :term:`project` -- 为一个 Django 实例进行一些列的设置，包括数据库配置，Django的说明性的选项以及应用程序级的一些配置。
 
-From the command line, ``cd`` into a directory where you'd like to store your
-code, then run the following command:
+通过命令行工具, ``cd`` 进入一个你打算用来存放胆码的目录，然后执行以下的命令：
 
 .. code-block:: console
 
    $ django-admin startproject mysite
 
-This will create a ``mysite`` directory in your current directory. If it didn't
-work, see :ref:`troubleshooting-django-admin`.
+这个命令将会在当前目录创建一个 ``mysite`` 文件夹。如果没有，请查看 :ref:`troubleshooting-django-admin`.
 
 .. note::
 
-    You'll need to avoid naming projects after built-in Python or Django
-    components. In particular, this means you should avoid using names like
-    ``django`` (which will conflict with Django itself) or ``test`` (which
-    conflicts with a built-in Python package).
+    您需要避免使用 Python 或 Django 内部组件的名称来命名您的工程。具体来说，着意味着不要使用诸如  ``django`` (这样的名称和 Django 冲突) 或者 ``test`` (这个会与 Python 内建的包名冲突).
 
 .. admonition:: Where should this code live?
 
-    If your background is in plain old PHP (with no use of modern frameworks),
-    you're probably used to putting code under the Web server's document root
-    (in a place such as ``/var/www``). With Django, you don't do that. It's
-    not a good idea to put any of this Python code within your Web server's
-    document root, because it risks the possibility that people may be able
-    to view your code over the Web. That's not good for security.
+    如果你有使用早先的纯 PHP 的经验 (现代的框架已经不这么用了)，你可能习惯于把代码放在 Web 服务器的根目录下 (例如 ``/var/www``)。使用 Django 时，您不用这样做。把 Python 代码放在Web服务器的根目录下并不是一个好主意，这样做会让代码通过Web浏览暴露给用户的风险。这是一种不安全的做法。
 
-    Put your code in some directory **outside** of the document root, such as
+    将你的地忙放在文档的根目录 **之外** ，例如
     :file:`/home/mycode`.
 
-Let's look at what :djadmin:`startproject` created::
+让我们来看一下 :djadmin:`startproject` 命令创建了什么::
 
     mysite/
         manage.py
@@ -88,46 +62,33 @@ Let's look at what :djadmin:`startproject` created::
             urls.py
             wsgi.py
 
-These files are:
+这些文件的含义如下：
 
-* The outer :file:`mysite/` root directory is just a container for your
-  project. Its name doesn't matter to Django; you can rename it to anything
-  you like.
+* 最外层 :file:`mysite/` 作为工程的根目录包含了所有的内容。它的名字可以任意命名；您可以把它修改成任何你喜欢的名字。
 
-* :file:`manage.py`: A command-line utility that lets you interact with this
-  Django project in various ways. You can read all the details about
-  :file:`manage.py` in :doc:`/ref/django-admin`.
+* :file:`manage.py`: 一个命令行的工具，通过他你可以使用多种方式操作这个工程。你可以查看所有关于
+  :file:`manage.py` 的信息在 :doc:`/ref/django-admin`里。
 
-* The inner :file:`mysite/` directory is the actual Python package for your
-  project. Its name is the Python package name you'll need to use to import
-  anything inside it (e.g. ``mysite.urls``).
+* 内层 :file:`mysite/` 目录是这个工程的 Python 包。他的名字就是Python 包的名字，你需要使用这个名字来引入她内部的模块(例如 ``mysite.urls``).
 
-* :file:`mysite/__init__.py`: An empty file that tells Python that this
-  directory should be considered a Python package. If you're a Python beginner,
-  read :ref:`more about packages <tut-packages>` in the official Python docs.
+* :file:`mysite/__init__.py`: 一个空的文件，他告诉Python 将这个目录当做一个Python 包来对待。如果您才开始学习 Python ，可以阅读 :ref:`more about packages <tut-packages>` 在官方的 Python 文档中。
 
-* :file:`mysite/settings.py`: Settings/configuration for this Django
-  project.  :doc:`/topics/settings` will tell you all about how settings
-  work.
+* :file:`mysite/settings.py`: 设置/配置这个 Django 工程。  :doc:`/topics/settings` 将会告诉你这些配置如何运作。
 
-* :file:`mysite/urls.py`: The URL declarations for this Django project; a
-  "table of contents" of your Django-powered site. You can read more about
-  URLs in :doc:`/topics/http/urls`.
+* :file:`mysite/urls.py`: Django 工程的 URL 申明；就像一个基于Django技术的网站的 "目录"。您可以获得更多的 URLs 相关的信息从 :doc:`/topics/http/urls`.
 
-* :file:`mysite/wsgi.py`: An entry-point for WSGI-compatible web servers to
-  serve your project. See :doc:`/howto/deployment/wsgi/index` for more details.
+* :file:`mysite/wsgi.py`: 一个为了让你的工程兼容 WSGI web 服务的入口。查阅 :doc:`/howto/deployment/wsgi/index` 可以获知跟多的细节。
 
-The development server
+开发服务器
 ======================
 
-Let's verify your Django project works. Change into the outer :file:`mysite` directory, if
-you haven't already, and run the following commands:
+让我们验证一下 Django 工程是否能正常工作。切换到最层 :file:`mysite` 目录下，如果你还没准备好工程，那么闲执行一下的命令：
 
 .. code-block:: console
 
    $ python manage.py runserver
 
-You'll see the following output on the command line:
+你将会在命令行看到一下的输出：
 
 .. parsed-literal::
 
@@ -137,93 +98,64 @@ You'll see the following output on the command line:
 
     You have unapplied migrations; your app may not work properly until they are applied.
     Run 'python manage.py migrate' to apply them.
-
+    
     |today| - 15:50:53
     Django version |version|, using settings 'mysite.settings'
     Starting development server at http://127.0.0.1:8000/
     Quit the server with CONTROL-C.
 
 .. note::
-    Ignore the warning about unapplied database migrations for now; we'll deal
-    with the database shortly.
+    目前，请先忽略未执行数据库迁移的警告信息；稍后我们将处理数据库的的问题。
 
-You've started the Django development server, a lightweight Web server written
-purely in Python. We've included this with Django so you can develop things
-rapidly, without having to deal with configuring a production server -- such as
-Apache -- until you're ready for production.
+你已经启动对了 Django 开发服务器，一个纯 Python 书写的轻量级 Web 服务器。我们将这个服务器包含在 Django 中一遍你能够快速投入到开发工作，而不用去配置一个身穿环境——例如 Apache ——除非你已经有了一个生产环境。
 
-Now's a good time to note: **don't** use this server in anything resembling a
-production environment. It's intended only for use while developing. (We're in
-the business of making Web frameworks, not Web servers.)
+现在正是给您一些提示的好时机: **千万别** 把这个web服务用于生产环境。 它仅仅是为了给您提供给开发时的方便。 (我们的强项是做 Web 开发框架，而不是 Web 服务器，你懂的。)
 
-Now that the server's running, visit http://127.0.0.1:8000/ with your Web
-browser. You'll see a "Congratulations!" page, with a rocket taking off.
+现在服务器已经运行起来了，通过浏览器访问 http://127.0.0.1:8000/ 。您将会看到"Congratulations!" 页面， 上边有一个正在发射的火箭。
 It worked!
 
-.. admonition:: Changing the port
+.. admonition:: 更改端口号
 
-    By default, the :djadmin:`runserver` command starts the development server
-    on the internal IP at port 8000.
+    默认情况下， :djadmin:`runserver` 命令将在一个内部IP的8000端口上启动开发服务器。
 
-    If you want to change the server's port, pass
-    it as a command-line argument. For instance, this command starts the server
-    on port 8080:
+    如果你想更改这个端口，可以通过命令行参数的方式。例如，下班的这条命令就将让服务在8080端口启动：
 
     .. code-block:: console
 
         $ python manage.py runserver 8080
 
-    If you want to change the server's IP, pass it along with the port. For
-    example, to listen on all available public IPs (which is useful if you are
-    running Vagrant or want to show off your work on other computers on the
-    network), use:
+    如果你想要修改服务器的IP地址，可以和修改端口一块进行。例如，要接受所有的IP进行访问(这个在您需要更换运行的计算机或者需要在其他联网的计算机上展示您的国祚成果时特别有用), 使用如下命令:
 
     .. code-block:: console
 
         $ python manage.py runserver 0:8000
 
-    **0** is a shortcut for **0.0.0.0**. Full docs for the development server
-    can be found in the :djadmin:`runserver` reference.
+    **0** 是对 **0.0.0.0**的简写形式。开发服务器的完整文档可以在 :djadmin:`runserver` 找到。
 
-.. admonition:: Automatic reloading of :djadmin:`runserver`
+.. admonition:: 自动加载 :djadmin:`runserver`
 
-    The development server automatically reloads Python code for each request
-    as needed. You don't need to restart the server for code changes to take
-    effect. However, some actions like adding files don't trigger a restart,
-    so you'll have to restart the server in these cases.
+    开发服务器会在需要时自动加载 Pyhton 代码。当您修改了代码之后您不需要重启 Web 服务器。然而，想增加文件这样的操作并不会出发自动加载，所有这是你需要手动的重启一下服务一遍加载新增的文件。
 
-Creating the Polls app
+创建Polls（投票）app
 ======================
 
-Now that your environment -- a "project" -- is set up, you're set to start
-doing work.
+现在你的开发环境 -- 一个 "项目" -- 已经准备好了，你现在就可以开始开发了。
 
-Each application you write in Django consists of a Python package that follows
-a certain convention. Django comes with a utility that automatically generates
-the basic directory structure of an app, so you can focus on writing code
-rather than creating directories.
+你在 Django 下开发的每一个项目，都是有一些列的Python包构成，这些包都遵循一写习惯用法。 Django 使用自动生成的方式来为你要开发的应用创建这些目录结构,这样你边可以专注在代码的编写上而不用做这些杂事。
 
-.. admonition:: Projects vs. apps
+.. admonition:: 工程 vs. 应用
 
-    What's the difference between a project and an app? An app is a Web
-    application that does something -- e.g., a Weblog system, a database of
-    public records or a simple poll app. A project is a collection of
-    configuration and apps for a particular website. A project can contain
-    multiple apps. An app can be in multiple projects.
+    工程（project）与应用（app）之间有什么区别呢？应用是一个 Web 的应用程序例如：一个 web 的日志系统、一个公共记录的应用或者一个投票应用。一个工程是一个集合了一系列应用的网站。一个工程可以包含多个应用。一个应用也可以放到多个工程中。
 
-Your apps can live anywhere on your :ref:`Python path <tut-searchpath>`. In
-this tutorial, we'll create our poll app right next to your :file:`manage.py`
-file so that it can be imported as its own top-level module, rather than a
-submodule of ``mysite``.
+你的应用可以放在 :ref:`Python path <tut-searchpath>`路径下的任何地方。本教程中,我们会创建投票应用，并建立 :file:`manage.py`文件，这样她便可以在我们的顶层模块中被引用。而不是在 ``mysite``的子模块中引用。
 
-To create your app, make sure you're in the same directory as :file:`manage.py`
-and type this command:
+为了你能够顺利创建应用，请确定命令行的当前路径与:file:`manage.py`文件的路径相同，然后输入一下的命令：
 
 .. code-block:: console
 
     $ python manage.py startapp polls
 
-That'll create a directory :file:`polls`, which is laid out like this::
+这条命令将会创建一个文件夹 :file:`polls`，文件夹查看的结构如下所示::
 
     polls/
         __init__.py
@@ -235,13 +167,12 @@ That'll create a directory :file:`polls`, which is laid out like this::
         tests.py
         views.py
 
-This directory structure will house the poll application.
+这个文件夹就用于存放投票应用的所有相关内容。
 
-Write your first view
+编写你的第一个视图
 =====================
 
-Let's write the first view. Open the file ``polls/views.py``
-and put the following Python code in it:
+让我们来编写第一个视图。打开文件 ``polls/views.py``然后输入如下的 Python 代码：
 
 .. snippet::
     :filename: polls/views.py
@@ -252,11 +183,10 @@ and put the following Python code in it:
     def index(request):
         return HttpResponse("Hello, world. You're at the polls index.")
 
-This is the simplest view possible in Django. To call the view, we need to map
-it to a URL - and for this we need a URLconf.
+这应该是 Django 中最简单的视图。为了访问这个视图，我们需要把它映射到一个 URL 地址。为了映射我们需要一个URL的配置文件。
 
-To create a URLconf in the polls directory, create a file called ``urls.py``.
-Your app directory should now look like::
+在 polls 文件夹下边创建一个`urls.py`文件，就可以通过它进行URL映射的配置。
+你的应用文件夹展开的结构应该如下所示::
 
     polls/
         __init__.py
@@ -269,7 +199,7 @@ Your app directory should now look like::
         urls.py
         views.py
 
-In the ``polls/urls.py`` file include the following code:
+在 ``polls/urls.py`` 文件里输入以下的代码:
 
 .. snippet::
     :filename: polls/urls.py
@@ -282,87 +212,63 @@ In the ``polls/urls.py`` file include the following code:
         path('', views.index, name='index'),
     ]
 
-The next step is to point the root URLconf at the ``polls.urls`` module. In
-``mysite/urls.py``, add an import for ``django.urls.include`` and insert an
-:func:`~django.urls.include` in the ``urlpatterns`` list, so you have:
+下一步应该指明根 URL配置位于 ``polls.urls`` 模块。在
+``mysite/urls.py``文件中，增加对 ``django.urls.include`` 的引用并且插入
+:func:`~django.urls.include` 在 ``urlpatterns`` 列表中，完成之后文件内容如下:
 
 .. snippet::
     :filename: mysite/urls.py
 
     from django.urls import include, path
     from django.contrib import admin
-
+    
     urlpatterns = [
         path('polls/', include('polls.urls')),
         path('admin/', admin.site.urls),
     ]
 
-The :func:`~django.urls.include` function allows referencing other URLconfs.
-Whenever Django encounters :func:`~django.urls.include`, it chops off whatever
-part of the URL matched up to that point and sends the remaining string to the
-included URLconf for further processing.
+ :func:`~django.urls.include` 函数可以引用其他的 URL 配置文件。无论在什么位置，只要 Django 遇到 :func:`~django.urls.include` 就会立即引入对应的 URL 配置然后再将引入点之后的配置接在引入配置的后边来进行后续的 URL 匹配工作。
 
-The idea behind :func:`~django.urls.include` is to make it easy to
-plug-and-play URLs. Since polls are in their own URLconf
-(``polls/urls.py``), they can be placed under "/polls/", or under
-"/fun_polls/", or under "/content/polls/", or any other path root, and the
-app will still work.
+设计 :func:`~django.urls.include` 功能的目的是为了实现即插即用的 URL 配置。既然 polls 应用有自己的 URL 配置 (``polls/urls.py``)，这些配置可以被放置在 "/polls/"目录之下，或者放在"/fun_polls/"目录下，或者放在 "/content/polls/"目录下，或者其他的路径下，不论放在那里都不影响我们的应用正常工作。
 
-.. admonition:: When to use :func:`~django.urls.include()`
+.. admonition::当我们使用 :func:`~django.urls.include()`
 
-    You should always use ``include()`` when you include other URL patterns.
-    ``admin.site.urls`` is the only exception to this.
+    你应当总是使用 ``include()`` 当你引用其他的 URL 匹配模式时。
+    ``admin.site.urls`` 是唯一的一个例外。
 
-You have now wired an ``index`` view into the URLconf. Lets verify it's
-working, run the following command:
+现在你已经写好了一个 ``index`` 视图在 URL 配置文件中。让我们来验证一下它是否能正常工作，运行下边的命令:
 
 .. code-block:: console
 
    $ python manage.py runserver
 
-Go to http://localhost:8000/polls/ in your browser, and you should see the
-text "*Hello, world. You're at the polls index.*", which you defined in the
-``index`` view.
+在你的浏览器中访问 http://localhost:8000/polls/ ，然后你应当看到 "*Hello, world. You're at the polls index.*"，这些文字是在``index`` 视图中定义的。
 
-The :func:`~django.urls.path` function is passed four arguments, two required:
-``route`` and ``view``, and two optional: ``kwargs``, and ``name``.
-At this point, it's worth reviewing what these arguments are for.
+ :func:`~django.urls.path` 函数接收四个参数，其中两必须的参数是：
+``route`` 和 ``view``，两个可选的参数是: ``kwargs``,和 ``name``.
+现在，我们来看一下这些参数有什么作用对后续的工作是很好有价值的。
 
 :func:`~django.urls.path` argument: ``route``
 ---------------------------------------------
 
-``route`` is a string that contains a URL pattern. When processing a request,
-Django starts at the first pattern in ``urlpatterns`` and makes its way down
-the list, comparing the requested URL against each pattern until it finds one
-that matches.
+``route`` 是一个包含了 URL 匹配模式的字符串。在处理请求的时候，Django 从 ``urlpatterns`` 定义的模式列表从第一个开始处理，处理方式是使用请求的 URL 与每一个模式即兴对比知道找到一个符合的模式设置。
 
-Patterns don't search GET and POST parameters, or the domain name. For example,
-in a request to ``https://www.example.com/myapp/``, the URLconf will look for
-``myapp/``. In a request to ``https://www.example.com/myapp/?page=3``, the
-URLconf will also look for ``myapp/``.
+匹配模式时不 包含 GET 和 POST 请求的参数，也不包含域名。例如，这个请求``https://www.example.com/myapp/``，映射到的 URL 配置是``myapp/``。下边这个请求``https://www.example.com/myapp/?page=3``，映射到的 URL 配置是 ``myapp/``。
 
 :func:`~django.urls.path` argument: ``view``
 --------------------------------------------
 
-When Django finds a matching pattern, it calls the specified view function with
-an :class:`~django.http.HttpRequest` object as the first argument and any
-"captured" values from the route as keyword arguments. We'll give an example
-of this in a bit.
+当 Django 找到一个匹配的 URL 模式，她就会调用指定视图的函数并将 :class:`~django.http.HttpRequest` 对象最为第一个参数传入并且任何从路由作为关键字参数“捕获”到的值也会给被调用的函数。稍后我们将会给出一个对应的示例。
 
 :func:`~django.urls.path` argument: ``kwargs``
 ----------------------------------------------
 
-Arbitrary keyword arguments can be passed in a dictionary to the target view. We
-aren't going to use this feature of Django in the tutorial.
+任何的参数都可以通过字典的形式传递给目标视图。 本教程中我们不会使用 Django 的这个功能。
 
 :func:`~django.urls.path` argument: ``name``
 --------------------------------------------
 
-Naming your URL lets you refer to it unambiguously from elsewhere in Django,
-especially from within templates. This powerful feature allows you to make
-global changes to the URL patterns of your project while only touching a single
-file.
+为你的 URL 命名可以让你更清晰的引用到它们避免歧义，尤其是在使用模板的时候。这是一个非常有用的特性，它使你只需要修改一个文件就能改变你整个工程中的 URL 匹配模式。
 
-When you're comfortable with the basic request and response flow, read
-:doc:`part 2 of this tutorial </intro/tutorial02>` to start working with the
-database.
+当你熟悉了基础的请求和响应的流程，可以进一步阅读
+:doc:`part 2 of this tutorial </intro/tutorial02>` 查看如何在 Django 项目中使用数据库。
