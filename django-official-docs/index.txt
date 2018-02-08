@@ -29,30 +29,27 @@ Django 文档
 文档是如何组织的？
 ==================================
 
-Django拥有大量的文档。 A high-level overview of how it's organized
-will help you know where to look for certain things:
+Django拥有大量的文档。 一个高度的概括将有助于你了解去哪里寻找特定的内容：
 
-* :doc:`Tutorials </intro/index>` take you by the hand through a series of
-  steps to create a Web application. Start here if you're new to Django or Web
-  application development. Also look at the ":ref:`index-first-steps`" below.
+* :doc:`Tutorials </intro/index>` 手把手教你如何一步一步创建Web应用。
+  如果你对Django还不熟悉，或者对Web应用开发还不熟悉，就从这开始吧。
+  也可以参考下面的":ref:`index-first-steps`" 。
 
-* :doc:`Topic guides </topics/index>` discuss key topics and concepts at a
-  fairly high level and provide useful background information and explanation.
+* :doc:`Topic guides </topics/index>`以高水平讨论了Django的关键话题和概念，
+  并且提供了有用的背景信息和扩展。
 
-* :doc:`Reference guides </ref/index>` contain technical reference for APIs and
-  other aspects of Django's machinery. They describe how it works and how to
-  use it but assume that you have a basic understanding of key concepts.
+* :doc:`Reference guides </ref/index>`包含了API的技术参考和Django机制的其他方面。
+  它们讨论了Django如何工作和如何使用它，但是前提是你需要对关键概念有基本的理解。
 
-* :doc:`How-to guides </howto/index>` are recipes. They guide you through the
-  steps involved in addressing key problems and use-cases. They are more
-  advanced than tutorials and assume some knowledge of how Django works.
+* :doc:`How-to guides </howto/index>` 是一些秘诀。它们指导你通过一些步骤解决关键问题和用例。
+  它们比手册要高级，但前提是需要了解一些Django如何工作的知识。
 
 .. _index-first-steps:
 
-First steps
+起初的几步
 ===========
 
-Are you new to Django or to programming? This is the place to start!
+你是Django新手或是编程新手？从这里开始吧！
 
 * **From scratch:**
   :doc:`Overview <intro/overview>` |
@@ -71,35 +68,35 @@ Are you new to Django or to programming? This is the place to start!
   :doc:`How to write reusable apps <intro/reusable-apps>` |
   :doc:`Writing your first patch for Django <intro/contributing>`
 
-The model layer
+模型层
 ===============
 
-Django provides an abstraction layer (the "models") for structuring and
-manipulating the data of your Web application. Learn more about it below:
+Django提供了一个抽象层(the "models") 以构建和操控Web应用程序的数据。
+从下面学习更多的知识：
 
-* **Models:**
+* **模型:**
   :doc:`Introduction to models <topics/db/models>` |
   :doc:`Field types <ref/models/fields>` |
   :doc:`Indexes <ref/models/indexes>` |
   :doc:`Meta options <ref/models/options>` |
   :doc:`Model class <ref/models/class>`
 
-* **QuerySets:**
+* **查询集:**
   :doc:`Making queries <topics/db/queries>` |
   :doc:`QuerySet method reference <ref/models/querysets>` |
   :doc:`Lookup expressions <ref/models/lookups>`
 
-* **Model instances:**
+* **模型实例:**
   :doc:`Instance methods <ref/models/instances>` |
   :doc:`Accessing related objects <ref/models/relations>`
 
-* **Migrations:**
+* **迁移:**
   :doc:`Introduction to Migrations<topics/migrations>` |
   :doc:`Operations reference <ref/migration-operations>` |
   :doc:`SchemaEditor <ref/schema-editor>` |
   :doc:`Writing migrations <howto/writing-migrations>`
 
-* **Advanced:**
+* **高级话题:**
   :doc:`Managers <topics/db/managers>` |
   :doc:`Raw SQL <topics/db/sql>` |
   :doc:`Transactions <topics/db/transactions>` |
@@ -112,14 +109,14 @@ manipulating the data of your Web application. Learn more about it below:
   :doc:`Conditional Expressions <ref/models/conditional-expressions>` |
   :doc:`Database Functions <ref/models/database-functions>`
 
-* **Other:**
+* **其它:**
   :doc:`Supported databases <ref/databases>` |
   :doc:`Legacy databases <howto/legacy-databases>` |
   :doc:`Providing initial data <howto/initial-data>` |
   :doc:`Optimize database access <topics/db/optimization>` |
   :doc:`PostgreSQL specific features <ref/contrib/postgres/index>`
 
-The view layer
+视图层
 ==============
 
 Django has the concept of "views" to encapsulate the logic responsible for
