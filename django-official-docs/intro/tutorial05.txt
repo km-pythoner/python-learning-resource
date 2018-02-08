@@ -1,62 +1,37 @@
 =====================================
-Writing your first Django app, part 5
+编写你的第一个 Django 应用, part 5
 =====================================
 
-This tutorial begins where :doc:`Tutorial 4 </intro/tutorial04>` left off.
-We've built a Web-poll application, and we'll now create some automated tests
-for it.
+本教程紧接 :doc:`Tutorial 4 </intro/tutorial04>` 之后。
+我们已经构建了一个 Web-poll （译注：基于 web 的投票软件）应用，现在我们将要为它创建一些自动化的测试。
 
-Introducing automated testing
+自动化测试简介
 =============================
 
-What are automated tests?
+自动化测试是什么？
 -------------------------
 
-Tests are simple routines that check the operation of your code.
+测试为了检查代码行为是否正常的一种简便的手段。
 
-Testing operates at different levels. Some tests might apply to a tiny detail
-(*does a particular model method return values as expected?*) while others
-examine the overall operation of the software (*does a sequence of user inputs
-on the site produce the desired result?*). That's no different from the kind of
-testing you did earlier in :doc:`Tutorial 2 </intro/tutorial02>`, using the
-:djadmin:`shell` to examine the behavior of a method, or running the
-application and entering data to check how it behaves.
+测试可以针对不同层次的目标进行。有些测试时针对一些细节(*一个模型内的方法是否返回了正确的值?*) 而有的测试是针对更上层的软件行为 (*用户在网页上的输入是否得到了预期的结果?*)。这与先前在 :doc:`Tutorial 2 </intro/tutorial02>`中做的测试没有区别， 使用:djadmin:`shell` 来运行一个方法，或者运行应用程序并输入数据检查它是的行为是否符合预期.
 
-What's different in *automated* tests is that the testing work is done for
-you by the system. You create a set of tests once, and then as you make changes
-to your app, you can check that your code still works as you originally
-intended, without having to perform time consuming manual testing.
+对自动化测试来说，区别在于测试工作是有一套系统来完成。你只要创建一些测试，然后修改你开发的代码，你就能价差你的代码是否依然如你期望的那样运行良好，而不用花费时间在手动测试上边。
 
-Why you need to create tests
+为什么你需要创建测试
 ----------------------------
 
-So why create tests, and why now?
+那么为什么需要使用测试，为什么是现在需要？
 
-You may feel that you have quite enough on your plate just learning
-Python/Django, and having yet another thing to learn and do may seem
-overwhelming and perhaps unnecessary. After all, our polls application is
-working quite happily now; going through the trouble of creating automated
-tests is not going to make it work any better. If creating the polls
-application is the last bit of Django programming you will ever do, then true,
-you don't need to know how to create automated tests. But, if that's not the
-case, now is an excellent time to learn.
+也许你觉得只要学习了 Python 或 Django 就已经完全足够了，在学习其他的东西就有点画蛇添足显得毫无必要。毕竟，目前看来我们的投票程序效果很好；花力气掌握自动化测试并不会让它去的更好的效果。如果构建这个投票程序是你用 Django 做的最后一件事情，那么，确实你不需要掌握如何创建自动化测试。但是，如果你还需要做更多的应用，这就是开始学习自动化测试最佳的时机。
 
-Tests will save you time
+自动化测试能够节约你的时间
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Up to a certain point, 'checking that it seems to work' will be a satisfactory
-test. In a more sophisticated application, you might have dozens of complex
-interactions between components.
+某种程度上来说, '检查软件是否在正常运行' 就算一个不错的测试了。对更复杂一些的情况来说，它可能需要几十个组件相互之间进行协作。
 
-A change in any of those components could have unexpected consequences on the
-application's behavior. Checking that it still 'seems to work' could mean
-running through your code's functionality with twenty different variations of
-your test data just to make sure you haven't broken something - not a good use
-of your time.
+对其中一个组件进行修改就可能引发软件产生一些异常的情况。还是检查 '能够正常运行' 可能意味着输入大量的测试数据然后运行你的代码用以检查修改是否导致哪一部分发生了损坏，这是对时间极大的浪费。
 
-That's especially true when automated tests could do this for you in seconds.
-If something's gone wrong, tests will also assist in identifying the code
-that's causing the unexpected behavior.
+自动化测试切实能够在极短的时间内帮你完成以上的工作。如果有哪里出了问题，它也能保你定位到引发问题的代码是在哪里。
 
 Sometimes it may seem a chore to tear yourself away from your productive,
 creative programming work to face the unglamorous and unexciting business
@@ -67,7 +42,7 @@ testing your application manually or trying to identify the cause of a
 newly-introduced problem.
 
 Tests don't just identify problems, they prevent them
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+​~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 It's a mistake to think of tests merely as a negative aspect of development.
 
@@ -80,7 +55,7 @@ goes wrong, they focus light on the part that has gone wrong - *even if you
 hadn't even realized it had gone wrong*.
 
 Tests make your code more attractive
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+​~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You might have created a brilliant piece of software, but you will find that
 many other developers will simply refuse to look at it because it lacks tests;
@@ -91,7 +66,7 @@ That other developers want to see tests in your software before they take it
 seriously is yet another reason for you to start writing tests.
 
 Tests help teams work together
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+​~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The previous points are written from the point of view of a single developer
 maintaining an application. Complex applications will be maintained by teams.
@@ -676,3 +651,5 @@ For full details on testing, see :doc:`Testing in Django
 When you're comfortable with testing Django views, read
 :doc:`part 6 of this tutorial</intro/tutorial06>` to learn about
 static files management.
+
+~~~~~~~~~~~~~~~~~~~~~~~~
