@@ -172,8 +172,7 @@ It worked!
 编写你的第一个视图
 =====================
 
-Let's write the first view. Open the file ``polls/views.py``
-and put the following Python code in it:
+让我们来编写第一个视图。打开文件 ``polls/views.py``然后输入如下的 Python 代码：
 
 .. snippet::
     :filename: polls/views.py
@@ -184,11 +183,10 @@ and put the following Python code in it:
     def index(request):
         return HttpResponse("Hello, world. You're at the polls index.")
 
-This is the simplest view possible in Django. To call the view, we need to map
-it to a URL - and for this we need a URLconf.
+这应该是 Django 中最简单的视图。为了访问这个视图，我们需要把它映射到一个 URL 地址。为了映射我们需要一个URL的配置文件。
 
-To create a URLconf in the polls directory, create a file called ``urls.py``.
-Your app directory should now look like::
+在 polls 文件夹下边创建一个`urls.py`文件，就可以通过它进行URL映射的配置。
+你的应用文件夹展开的结构应该如下所示::
 
     polls/
         __init__.py
@@ -201,7 +199,7 @@ Your app directory should now look like::
         urls.py
         views.py
 
-In the ``polls/urls.py`` file include the following code:
+在 ``polls/urls.py`` 文件里输入以下的代码:
 
 .. snippet::
     :filename: polls/urls.py
@@ -214,9 +212,9 @@ In the ``polls/urls.py`` file include the following code:
         path('', views.index, name='index'),
     ]
 
-The next step is to point the root URLconf at the ``polls.urls`` module. In
-``mysite/urls.py``, add an import for ``django.urls.include`` and insert an
-:func:`~django.urls.include` in the ``urlpatterns`` list, so you have:
+下一步应该指明根 URL配置位于 ``polls.urls`` 模块。在
+``mysite/urls.py``文件中，增加对 ``django.urls.include`` 的引用并且插入
+:func:`~django.urls.include` 在 ``urlpatterns`` 列表中，完成之后文件内容如下:
 
 .. snippet::
     :filename: mysite/urls.py
@@ -229,72 +227,48 @@ The next step is to point the root URLconf at the ``polls.urls`` module. In
         path('admin/', admin.site.urls),
     ]
 
-The :func:`~django.urls.include` function allows referencing other URLconfs.
-Whenever Django encounters :func:`~django.urls.include`, it chops off whatever
-part of the URL matched up to that point and sends the remaining string to the
-included URLconf for further processing.
+ :func:`~django.urls.include` 函数可以引用其他的 URL 配置文件。无论在什么位置，只要 Django 遇到 :func:`~django.urls.include` 就会立即引入对应的 URL 配置然后再将引入点之后的配置接在引入配置的后边来进行后续的 URL 匹配工作。
 
-The idea behind :func:`~django.urls.include` is to make it easy to
-plug-and-play URLs. Since polls are in their own URLconf
-(``polls/urls.py``), they can be placed under "/polls/", or under
-"/fun_polls/", or under "/content/polls/", or any other path root, and the
-app will still work.
+设计 :func:`~django.urls.include` 功能的目的是为了实现即插即用的 URL 配置。既然 polls 应用有自己的 URL 配置 (``polls/urls.py``)，这些配置可以被放置在 "/polls/"目录之下，或者放在"/fun_polls/"目录下，或者放在 "/content/polls/"目录下，或者其他的路径下，不论放在那里都不影响我们的应用正常工作。
 
-.. admonition:: When to use :func:`~django.urls.include()`
+.. admonition::当我们使用 :func:`~django.urls.include()`
 
-    You should always use ``include()`` when you include other URL patterns.
-    ``admin.site.urls`` is the only exception to this.
+    你应当总是使用 ``include()`` 当你引用其他的 URL 匹配模式时。
+    ``admin.site.urls`` 是唯一的一个例外。
 
-You have now wired an ``index`` view into the URLconf. Lets verify it's
-working, run the following command:
+现在你已经写好了一个 ``index`` 视图在 URL 配置文件中。让我们来验证一下它是否能正常工作，运行下边的命令:
 
 .. code-block:: console
 
    $ python manage.py runserver
 
-Go to http://localhost:8000/polls/ in your browser, and you should see the
-text "*Hello, world. You're at the polls index.*", which you defined in the
-``index`` view.
+在你的浏览器中访问 http://localhost:8000/polls/ ，然后你应当看到 "*Hello, world. You're at the polls index.*"，这些文字是在``index`` 视图中定义的。
 
-The :func:`~django.urls.path` function is passed four arguments, two required:
-``route`` and ``view``, and two optional: ``kwargs``, and ``name``.
-At this point, it's worth reviewing what these arguments are for.
+ :func:`~django.urls.path` 函数接收四个参数，其中两必须的参数是：
+``route`` 和 ``view``，两个可选的参数是: ``kwargs``,和 ``name``.
+现在，我们来看一下这些参数有什么作用对后续的工作是很好有价值的。
 
 :func:`~django.urls.path` argument: ``route``
 ---------------------------------------------
 
-``route`` is a string that contains a URL pattern. When processing a request,
-Django starts at the first pattern in ``urlpatterns`` and makes its way down
-the list, comparing the requested URL against each pattern until it finds one
-that matches.
+``route`` 是一个包含了 URL 匹配模式的字符串。在处理请求的时候，Django 从 ``urlpatterns`` 定义的模式列表从第一个开始处理，处理方式是使用请求的 URL 与每一个模式即兴对比知道找到一个符合的模式设置。
 
-Patterns don't search GET and POST parameters, or the domain name. For example,
-in a request to ``https://www.example.com/myapp/``, the URLconf will look for
-``myapp/``. In a request to ``https://www.example.com/myapp/?page=3``, the
-URLconf will also look for ``myapp/``.
+匹配模式时不 包含 GET 和 POST 请求的参数，也不包含域名。例如，这个请求``https://www.example.com/myapp/``，映射到的 URL 配置是``myapp/``。下边这个请求``https://www.example.com/myapp/?page=3``，映射到的 URL 配置是 ``myapp/``。
 
 :func:`~django.urls.path` argument: ``view``
 --------------------------------------------
 
-When Django finds a matching pattern, it calls the specified view function with
-an :class:`~django.http.HttpRequest` object as the first argument and any
-"captured" values from the route as keyword arguments. We'll give an example
-of this in a bit.
+当 Django 找到一个匹配的 URL 模式，她就会调用指定视图的函数并将 :class:`~django.http.HttpRequest` 对象最为第一个参数传入并且任何从路由作为关键字参数“捕获”到的值也会给被调用的函数。稍后我们将会给出一个对应的示例。
 
 :func:`~django.urls.path` argument: ``kwargs``
 ----------------------------------------------
 
-Arbitrary keyword arguments can be passed in a dictionary to the target view. We
-aren't going to use this feature of Django in the tutorial.
+任何的参数都可以通过字典的形式传递给目标视图。 本教程中我们不会使用 Django 的这个功能。
 
 :func:`~django.urls.path` argument: ``name``
 --------------------------------------------
 
-Naming your URL lets you refer to it unambiguously from elsewhere in Django,
-especially from within templates. This powerful feature allows you to make
-global changes to the URL patterns of your project while only touching a single
-file.
+为你的 URL 命名可以让你更清晰的引用到它们避免歧义，尤其是在使用模板的时候。这是一个非常有用的特性，它使你只需要修改一个文件就能改变你整个工程中的 URL 匹配模式。
 
-When you're comfortable with the basic request and response flow, read
-:doc:`part 2 of this tutorial </intro/tutorial02>` to start working with the
-database.
+当你熟悉了基础的请求和响应的流程，可以进一步阅读
+:doc:`part 2 of this tutorial </intro/tutorial02>` 查看如何在 Django 项目中使用数据库。
