@@ -1,12 +1,11 @@
 =====================================
-Writing your first Django app, part 3
+创作你的第一个Django app, part 3
 =====================================
 
-This tutorial begins where :doc:`Tutorial 2 </intro/tutorial02>` left off. We're
-continuing the Web-poll application and will focus on creating the public
-interface -- "views."
+本教程紧接:doc:`Tutorial 2 </intro/tutorial02>` 之后。
+我们继续Web-poll 应用，并将目光聚焦在创建公共接口-- "views."
 
-Overview
+概述
 ========
 
 A view is a "type" of Web page in your Django application that generally serves

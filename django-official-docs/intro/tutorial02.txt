@@ -1,28 +1,23 @@
+
 =====================================
-Writing your first Django app, part 2
+创作你的第一个 Django app, part 2
 =====================================
 
-This tutorial begins where :doc:`Tutorial 1 </intro/tutorial01>` left off.
-We'll setup the database, create your first model, and get a quick introduction
-to Django's automatically-generated admin site.
+本教程紧接 :doc:`Tutorial 1 </intro/tutorial01>` 之后。
+我们将设置数据库，创建第一个model，并且对Django自动生成admin站点做简短介绍。
 
-Database setup
+数据库设置
 ==============
 
-Now, open up :file:`mysite/settings.py`. It's a normal Python module with
-module-level variables representing Django settings.
+现在，打开 :file:`mysite/settings.py`。它是一个表示Django设置的带模块级变量的普通Python模块。
 
-By default, the configuration uses SQLite. If you're new to databases, or
-you're just interested in trying Django, this is the easiest choice. SQLite is
-included in Python, so you won't need to install anything else to support your
-database. When starting your first real project, however, you may want to use a
-more scalable database like PostgreSQL, to avoid database-switching headaches
-down the road.
+缺省情况下的配置使用SQLite数据库。如果你对数据库不熟悉，或者只是想尝试一下Django，
+它就是最省力的选择。SQLite包含在Python中，因此不需要再安装其它代码库以支持数据库。
+然而，当启动一个真实项目，你需要一个伸缩性更好的数据库比如PostgreSQL，用以避免数据库切换的困扰。
 
-If you wish to use another database, install the appropriate :ref:`database
-bindings <database-installation>` and change the following keys in the
-:setting:`DATABASES` ``'default'`` item to match your database connection
-settings:
+如果希望采用非SQLite数据库，安装合适的 :ref:`database
+bindings <database-installation>` 并修改
+:setting:`DATABASES` ``'default'`` 配置项中下面的键以适配数据库连接：
 
 * :setting:`ENGINE <DATABASE-ENGINE>` -- Either
   ``'django.db.backends.sqlite3'``,
@@ -31,109 +26,86 @@ settings:
   ``'django.db.backends.oracle'``. Other backends are :ref:`also available
   <third-party-notes>`.
 
-* :setting:`NAME` -- The name of your database. If you're using SQLite, the
-  database will be a file on your computer; in that case, :setting:`NAME`
-  should be the full absolute path, including filename, of that file. The
-  default value, ``os.path.join(BASE_DIR, 'db.sqlite3')``, will store the file
-  in your project directory.
+* :setting:`NAME` -- 数据库名称。如果使用SQLite，数据库将会是你电脑中的一个文件；
+  那样的话， :setting:`NAME`应该是全路径的绝对地址，包括文件名称。
+  缺省值 ``os.path.join(BASE_DIR, 'db.sqlite3')``的设置将文件存储在工程路径下。
 
-If you are not using SQLite as your database, additional settings such as
-:setting:`USER`, :setting:`PASSWORD`, and :setting:`HOST` must be added.
-For more details, see the reference documentation for :setting:`DATABASES`.
+如果不使用SQLite作为项目的数据库，需要添加诸如：
+:setting:`USER`, :setting:`PASSWORD`, and :setting:`HOST`的附加设置。
+更多详情见 :setting:`DATABASES`.
 
-.. admonition:: For databases other than SQLite
+.. admonition:: SQLite之外的数据库
 
-    If you're using a database besides SQLite, make sure you've created a
-    database by this point. Do that with "``CREATE DATABASE database_name;``"
-    within your database's interactive prompt.
+    如果没有在使用SQLite，请确保你已经创建了数据库。
+    在数据库的交互环境下输入： "``CREATE DATABASE database_name;``"。
 
-    Also make sure that the database user provided in :file:`mysite/settings.py`
-    has "create database" privileges. This allows automatic creation of a
-    :ref:`test database <the-test-database>` which will be needed in a later
-    tutorial.
 
-    If you're using SQLite, you don't need to create anything beforehand - the
-    database file will be created automatically when it is needed.
+    还要确保:file:`mysite/settings.py`中的数据库用户拥有"create database" 权限。
+    这允许Django框架稍后的内容中自动创建一个测试数据库。
 
-While you're editing :file:`mysite/settings.py`, set :setting:`TIME_ZONE` to
-your time zone.
+    如果使用SQLite，就不需要提前创建 - 数据库文件将在需要时自动创建。
 
-Also, note the :setting:`INSTALLED_APPS` setting at the top of the file. That
-holds the names of all Django applications that are activated in this Django
-instance. Apps can be used in multiple projects, and you can package and
-distribute them for use by others in their projects.
+当编辑 :file:`mysite/settings.py`时，设置 :setting:`TIME_ZONE` 为你的时区。
 
-By default, :setting:`INSTALLED_APPS` contains the following apps, all of which
-come with Django:
+同时，注意文件顶部的 :setting:`INSTALLED_APPS`设置。它放置了该Django实例下的
+所有Django应用名。Apps可以用在多个工程中，可以打包并分发它们供他人使用。
 
-* :mod:`django.contrib.admin` -- The admin site. You'll use it shortly.
+缺省情况下， :setting:`INSTALLED_APPS` 包含了如下的apps， 它们全部来自Django：
 
-* :mod:`django.contrib.auth` -- An authentication system.
+* :mod:`django.contrib.admin` -- 管理站点。很快就会用到它。
 
-* :mod:`django.contrib.contenttypes` -- A framework for content types.
+* :mod:`django.contrib.auth` -- 认证系统
 
-* :mod:`django.contrib.sessions` -- A session framework.
+* :mod:`django.contrib.contenttypes` -- 内容类型框架
 
-* :mod:`django.contrib.messages` -- A messaging framework.
+* :mod:`django.contrib.sessions` -- session框架
 
-* :mod:`django.contrib.staticfiles` -- A framework for managing
-  static files.
+* :mod:`django.contrib.messages` -- 消息框架
 
-These applications are included by default as a convenience for the common case.
+* :mod:`django.contrib.staticfiles` -- 管理静态类型文件框架
 
-Some of these applications make use of at least one database table, though,
-so we need to create the tables in the database before we can use them. To do
-that, run the following command:
+缺省情况下已经包含了这些应用，以便于应对多数场景。
+
+这些应用中的一部分使用了至少一张数据库表，因此我们需要在数据库中创建数据库表。
+为了达到目的，运行下面的命令：
 
 .. code-block:: console
 
     $ python manage.py migrate
 
-The :djadmin:`migrate` command looks at the :setting:`INSTALLED_APPS` setting
-and creates any necessary database tables according to the database settings
-in your :file:`mysite/settings.py` file and the database migrations shipped
-with the app (we'll cover those later). You'll see a message for each
-migration it applies. If you're interested, run the command-line client for your
-database and type ``\dt`` (PostgreSQL), ``SHOW TABLES;`` (MySQL), ``.schema``
-(SQLite), or ``SELECT TABLE_NAME FROM USER_TABLES;`` (Oracle) to display the
-tables Django created.
+:djadmin:`migrate` 命令按照 :setting:`INSTALLED_APPS` 设置
+并根据:file:`mysite/settings.py` 中的配置创建和更改必要的数据库表（之后会讲到）。
+运行后能看到该命令运行并起效的信息。
+如果感兴趣，运行你数据库的命令行客户端并输入 ``\dt`` (PostgreSQL), ``SHOW TABLES;`` (MySQL), ``.schema``
+(SQLite), or ``SELECT TABLE_NAME FROM USER_TABLES;`` (Oracle) 以显示Django'创建的数据库表。
 
-.. admonition:: For the minimalists
+.. admonition:: 写给极简主义者
 
-    Like we said above, the default applications are included for the common
-    case, but not everybody needs them. If you don't need any or all of them,
-    feel free to comment-out or delete the appropriate line(s) from
-    :setting:`INSTALLED_APPS` before running :djadmin:`migrate`. The
-    :djadmin:`migrate` command will only run migrations for apps in
-    :setting:`INSTALLED_APPS`.
+    正如上面所说，默认的应用被包含在工程中以应付通用场景。
+    如果你觉得不需要它们全部，在运行:django:`migrate`前将:setting:`INSTALLED_APPS`中对应的内容删除或注释。
+    :djadmin:`migrate` 命令只会运行:setting:`INSTALLED_APPS`中的迁移。
 
-.. _creating-models:
-
-Creating models
+创建模型
 ===============
 
-Now we'll define your models -- essentially, your database layout, with
-additional metadata.
+现在我们将定义模型 -- 实质上就是数据库结构，和附加的源数据。
 
-.. admonition:: Philosophy
+.. admonition:: 哲学
 
-   A model is the single, definitive source of truth about your data. It contains
-   the essential fields and behaviors of the data you're storing. Django follows
-   the :ref:`DRY Principle <dry>`. The goal is to define your data model in one
-   place and automatically derive things from it.
+   模型是你的数据简单，可信的源头。
+   它包含了你所存储的数据必要的字段和行为。
+   Django遵循:ref:`DRY Principle <dry>`。
+   它的目标是在一个地方定义数据模型并且自动对其进行自动派生。
 
-   This includes the migrations - unlike in Ruby On Rails, for example, migrations
-   are entirely derived from your models file, and are essentially just a
-   history that Django can roll through to update your database schema to
-   match your current models.
+   这包括了迁移 - 不像Ruby On Rails，比如迁移自模型文件派生而来，
+   并且本质上只是Django可以滚动更新数据库模式以匹配当前模型的历史。
 
-In our simple poll app, we'll create two models: ``Question`` and ``Choice``.
-A ``Question`` has a question and a publication date. A ``Choice`` has two
-fields: the text of the choice and a vote tally. Each ``Choice`` is associated
-with a ``Question``.
+在我们简单的poll app中，将创建两个模型： ``Question`` 和 ``Choice``。
+``Question`` 拥有question 和 publication date两个字段。 ``Choice`` 拥有两个字段：
+选择的文本和对应的投票。 每一个``Choice`` 关联一个``Question``。
 
-These concepts are represented by simple Python classes. Edit the
-:file:`polls/models.py` file so it looks like this:
+这些概念使用简单的Python类表达。如下编辑
+:file:`polls/models.py` 文件：
 
 .. snippet::
     :filename: polls/models.py
@@ -151,65 +123,59 @@ These concepts are represented by simple Python classes. Edit the
         choice_text = models.CharField(max_length=200)
         votes = models.IntegerField(default=0)
 
-The code is straightforward. Each model is represented by a class that
-subclasses :class:`django.db.models.Model`. Each model has a number of class
-variables, each of which represents a database field in the model.
+代码直来直去。每一个模型都通过继承类:class:`django.db.models.Model`来表示。
+ 每个模型都有一些类变量，它们各自代表了数据库的一个字段。
 
-Each field is represented by an instance of a :class:`~django.db.models.Field`
-class -- e.g., :class:`~django.db.models.CharField` for character fields and
-:class:`~django.db.models.DateTimeField` for datetimes. This tells Django what
-type of data each field holds.
+每一个字段都被表示为一个:class:`~django.db.models.Field`
+类 -- 比如, :class:`~django.db.models.CharField` 代表字符型，
+:class:`~django.db.models.DateTimeField` 代表DateTime型。
+这（就能）告诉Django各字段分别是什么类型。
 
-The name of each :class:`~django.db.models.Field` instance (e.g.
-``question_text`` or ``pub_date``) is the field's name, in machine-friendly
-format. You'll use this value in your Python code, and your database will use
-it as the column name.
+每一个 :class:`~django.db.models.Field` 实例的名称(e.g.
+``question_text`` or ``pub_date``) 就是域的名称，使用机器友好的格式。
+你将在Python代码中使用这个值，并且数据库中也使用它作为列名。
 
-You can use an optional first positional argument to a
-:class:`~django.db.models.Field` to designate a human-readable name. That's used
-in a couple of introspective parts of Django, and it doubles as documentation.
-If this field isn't provided, Django will use the machine-readable name. In this
-example, we've only defined a human-readable name for ``Question.pub_date``.
-For all other fields in this model, the field's machine-readable name will
-suffice as its human-readable name.
+你可以通过为:class:`~django.db.models.Field` 类在
+（构造函数的）第一位置指定可选的别名参数以便人类阅读。
+这在Django中一些涉及内省的地方使用过，而且它也可以作为文档来使用。
+如果这个域（参数）没有被提供，Django将使用机器可读的名称。
+在本文的例子中，我们已经切仅为``Question.pub_date``定义了一个人类可读的名称。
+对于其他的模型中的域，它们的机器可读的名称满足作为人类可读名称的作用。
 
-Some :class:`~django.db.models.Field` classes have required arguments.
-:class:`~django.db.models.CharField`, for example, requires that you give it a
-:attr:`~django.db.models.CharField.max_length`. That's used not only in the
-database schema, but in validation, as we'll soon see.
 
-A :class:`~django.db.models.Field` can also have various optional arguments; in
-this case, we've set the :attr:`~django.db.models.Field.default` value of
-``votes`` to 0.
+一些 :class:`~django.db.models.Field` 类有必填参数。
+比如:class:`~django.db.models.CharField`, 它需要给出属性
+:attr:`~django.db.models.CharField.max_length`。它不仅仅用在数据库的格式中，
+也用在字段验证中，正如我们将要看到的那样。
 
-Finally, note a relationship is defined, using
-:class:`~django.db.models.ForeignKey`. That tells Django each ``Choice`` is
-related to a single ``Question``. Django supports all the common database
-relationships: many-to-one, many-to-many, and one-to-one.
+:class:`~django.db.models.Field`类同时也能拥有各种各样的可选参数：
+在这个例子中，我们设置了``votes``的:attr:`~django.db.models.Field.default` 值为0。
 
-Activating models
+最后，注意我们已经定义了一种关系，使用
+:class:`~django.db.models.ForeignKey`。
+这告诉Django每一个``Choice``对应一个单独的``Question``类。
+Django支持所有数据库表对应关系：many-to-one, many-to-many, 以及one-to-one。
+
+激活模型
 =================
 
-That small bit of model code gives Django a lot of information. With it, Django
-is able to:
+上面的少数代码给了Django不少的信息。使用他们，Django可以做到：
 
-* Create a database schema (``CREATE TABLE`` statements) for this app.
-* Create a Python database-access API for accessing ``Question`` and ``Choice`` objects.
+* 构造数据库表结构 (``CREATE TABLE`` statements)。
+* 构造基于Python的数据库访问API以访问：``Question``和``Choice`` 对象。
 
-But first we need to tell our project that the ``polls`` app is installed.
+但首先我们得先告诉工程``polls`` app安装在哪里。
 
-.. admonition:: Philosophy
+.. admonition:: 哲学
 
-    Django apps are "pluggable": You can use an app in multiple projects, and
-    you can distribute apps, because they don't have to be tied to a given
-    Django installation.
+    Django apps是“插件化的”：你可以在不同的工程中使用同一个app，而且可以分发app们，
+    因为它们不必绑定到给定的Django安装。
 
-To include the app in our project, we need to add a reference to its
-configuration class in the :setting:`INSTALLED_APPS` setting. The
-``PollsConfig`` class is in the :file:`polls/apps.py` file, so its dotted path
-is ``'polls.apps.PollsConfig'``. Edit the :file:`mysite/settings.py` file and
-add that dotted path to the :setting:`INSTALLED_APPS` setting. It'll look like
-this:
+为了将这个app包含到你的工程中，我们需要将配置类的引用加入到:setting:`INSTALLED_APPS` 设置中。
+``PollsConfig`` 类在:file:`polls/apps.py` 文件中，所以它的点号路径就是：
+``'polls.apps.PollsConfig'``。 编辑 :file:`mysite/settings.py` 文件并将点号路径加入到
+:setting:`INSTALLED_APPS` 设置中。就像这样：
+
 
 .. snippet::
     :filename: mysite/settings.py
@@ -224,13 +190,13 @@ this:
         'django.contrib.staticfiles',
     ]
 
-Now Django knows to include the ``polls`` app. Let's run another command:
+现在Django知道需要包含``polls`` app了，让我们运行另外一个命令：
 
 .. code-block:: console
 
     $ python manage.py makemigrations polls
 
-You should see something similar to the following:
+你将看到类似于下面的内容：
 
 .. code-block:: text
 
@@ -240,28 +206,24 @@ You should see something similar to the following:
         - Create model Question
         - Add field question to choice
 
-By running ``makemigrations``, you're telling Django that you've made
-some changes to your models (in this case, you've made new ones) and that
-you'd like the changes to be stored as a *migration*.
+通过运行``makemigrations``命令，等于是告诉Django你的模型产生了变化（本例中是新建了两张表）
+且你希望这些变化通过*migration*保存。
 
-Migrations are how Django stores changes to your models (and thus your
-database schema) - they're just files on disk. You can read the migration
-for your new model if you like; it's the file
-``polls/migrations/0001_initial.py``. Don't worry, you're not expected to read
-them every time Django makes one, but they're designed to be human-editable
-in case you want to manually tweak how Django changes things.
+迁移（文件）就是Django如何存储模型的改动(例如数据库模型) -它们仅仅是硬盘上的文件。
+如果需要，可以阅读新模型的迁移（文件）。它就是文件
+``polls/migrations/0001_initial.py``。
+别担心，不需要每次Django创建它们时都阅读，但它们被设计成人类可读的，
+以防你想要对它们进行微调。
 
-There's a command that will run the migrations for you and manage your database
-schema automatically - that's called :djadmin:`migrate`, and we'll come to it in a
-moment - but first, let's see what SQL that migration would run. The
-:djadmin:`sqlmigrate` command takes migration names and returns their SQL:
+有一个命令用于运行迁移并并自动管理数据库模式- 那就是 :djadmin:`migrate`，
+我们稍后再研究它 - 在这之前，让我们先看看那次迁移会运行什么SQL。
+:djadmin:`sqlmigrate` 命令获取了迁移名称并返回它们的SQL：
 
 .. code-block:: console
 
     $ python manage.py sqlmigrate polls 0001
 
-You should see something similar to the following (we've reformatted it for
-readability):
+你将能看到类似下面的内容（我们已经重新排版便于阅读）：
 
 .. code-block:: sql
 
@@ -296,41 +258,34 @@ readability):
 
     COMMIT;
 
-Note the following:
+记住下面几点：
 
-* The exact output will vary depending on the database you are using. The
-  example above is generated for PostgreSQL.
+* 具体的输出根据根据你所依赖的数据库的不同而不同。上述的例子专为PostgreSQL生成。
 
-* Table names are automatically generated by combining the name of the app
-  (``polls``) and the lowercase name of the model -- ``question`` and
-  ``choice``. (You can override this behavior.)
+* 表名的生成结合了app的名字(``polls``) 以及模型的小写字母名称-- ``question`` 和
+  ``choice``。（可以自己覆盖这项设定）
 
-* Primary keys (IDs) are added automatically. (You can override this, too.)
+* 主键自动加入。（同样可以自己覆盖这项设定）。
 
-* By convention, Django appends ``"_id"`` to the foreign key field name.
-  (Yes, you can override this, as well.)
+* 依据惯例，Django在外键的字段名后加入``"_id"``。（同样可以自己覆盖这项设定）
 
-* The foreign key relationship is made explicit by a ``FOREIGN KEY``
-  constraint. Don't worry about the ``DEFERRABLE`` parts; that's just telling
-  PostgreSQL to not enforce the foreign key until the end of the transaction.
+* 使用``FOREIGN KEY``约束来明确外键关系。不要担心``DEFERRABLE``部分；
+  它只是告诉PostgreSQL不要在事务的结尾执行外键操作。
 
-* It's tailored to the database you're using, so database-specific field types
-  such as ``auto_increment`` (MySQL), ``serial`` (PostgreSQL), or ``integer
-  primary key autoincrement`` (SQLite) are handled for you automatically. Same
-  goes for the quoting of field names -- e.g., using double quotes or
-  single quotes.
+* 它是为你所使用的数据库量身定制的，因此各数据库特定的字段例如
+``auto_increment`` (MySQL), ``serial`` (PostgreSQL), or ``integer
+  primary key autoincrement`` (SQLite) 都是自动生成的。
+  字段名称的双引号和单引号也是一样。
 
-* The :djadmin:`sqlmigrate` command doesn't actually run the migration on your
-  database - it just prints it to the screen so that you can see what SQL
-  Django thinks is required. It's useful for checking what Django is going to
-  do or if you have database administrators who require SQL scripts for
-  changes.
+* 命令:djadmin:`sqlmigrate` 不会运行在你的数据库里运行迁移
+  - 它只是将Django认为需要的SQL打印到屏幕上。
+  当检查Django下一步做什么或者数据库管理员需要修改SQL脚本时会非常有用。
 
-If you're interested, you can also run
-:djadmin:`python manage.py check <check>`; this checks for any problems in
+如果感兴趣，可以运行:djadmin:`python manage.py check <check>`命令。
+this checks for any problems in
 your project without making migrations or touching the database.
 
-Now, run :djadmin:`migrate` again to create those model tables in your database:
+现在，再次运行:djadmin:`migrate`创建模型数据表。
 
 .. code-block:: console
 
@@ -341,69 +296,58 @@ Now, run :djadmin:`migrate` again to create those model tables in your database:
       Rendering model states... DONE
       Applying polls.0001_initial... OK
 
-The :djadmin:`migrate` command takes all the migrations that haven't been
-applied (Django tracks which ones are applied using a special table in your
-database called ``django_migrations``) and runs them against your database -
-essentially, synchronizing the changes you made to your models with the schema
-in the database.
+:djadmin:`migrate` 命令使得所有未实现的命令生效
+（Django使用名为``django_migrations``的数据库表跟踪哪些已经生效）
+并运行它们修改数据库-实质上，就是同步你在模型中所做的修改到数据库中。
 
-Migrations are very powerful and let you change your models over time, as you
-develop your project, without the need to delete your database or tables and
-make new ones - it specializes in upgrading your database live, without
-losing data. We'll cover them in more depth in a later part of the tutorial,
-but for now, remember the three-step guide to making model changes:
+迁移非常有用，可以让你随时修改自己的模型，开发的时候，不需要删除数据库或数据库表并新建
+- 它专为更新数据库，而不会丢失数据。我们将在后面的部分深入的讲讲它，
+但现在，你只需记住修改模型生效的三步：
 
-* Change your models (in ``models.py``).
-* Run :djadmin:`python manage.py makemigrations <makemigrations>` to create
-  migrations for those changes
-* Run :djadmin:`python manage.py migrate <migrate>` to apply those changes to
-  the database.
+* 修改模型类 (in ``models.py``).
+* 运行 :djadmin:`python manage.py makemigrations <makemigrations>` 来为改动创建迁移。
+* 运行 :djadmin:`python manage.py migrate <migrate>` 来讲修改结构迁移到数据库。
 
-The reason that there are separate commands to make and apply migrations is
-because you'll commit migrations to your version control system and ship them
-with your app; they not only make your development easier, they're also
-useable by other developers and in production.
+将创建迁移和迁移实施设计为分开的命令的原因是你将提交迁移到版本控制系统中
+并将它们和app放在一起；不仅要使得开发更简单，而且它们还会被其他的开发者所使用。
 
-Read the :doc:`django-admin documentation </ref/django-admin>` for full
-information on what the ``manage.py`` utility can do.
+阅读:doc:`django-admin documentation </ref/django-admin>` 获取完整的使用``manage.py``命令的信息。
 
-Playing with the API
+
+使用API
 ====================
 
-Now, let's hop into the interactive Python shell and play around with the free
-API Django gives you. To invoke the Python shell, use this command:
+现在，我们来进入Python shell 的交互环境并使用Django api。
+先使用下面的命令进入Python shell。
 
 .. code-block:: console
 
     $ python manage.py shell
 
-We're using this instead of simply typing "python", because :file:`manage.py`
-sets the ``DJANGO_SETTINGS_MODULE`` environment variable, which gives Django
-the Python import path to your :file:`mysite/settings.py` file.
+使用这个命令代替简单的输入"python"，因为:file:`manage.py`
+设置了 ``DJANGO_SETTINGS_MODULE`` 环境变量，它把:file:`mysite/settings.py`的引入路径告诉了Django。
 
-.. admonition:: Bypassing manage.py
+.. admonition:: 省略 manage.py
 
-    If you'd rather not use :file:`manage.py`, no problem. Just set the
-    :envvar:`DJANGO_SETTINGS_MODULE` environment variable to
-    ``mysite.settings``, start a plain Python shell, and set up Django:
+    如果你不想使用:file:`manage.py`，这也是没问题的。
+    只需要设置:envvar:`DJANGO_SETTINGS_MODULE` 环境变量为
+    ``mysite.settings``，开启一个纯Python环境，并设置Django：
 
     .. code-block:: pycon
 
         >>> import django
         >>> django.setup()
 
-    If this raises an :exc:`AttributeError`, you're probably using
-    a version of Django that doesn't match this tutorial version. You'll want
-    to either switch to the older tutorial or the newer Django version.
+    如果这句代码产生了一个:exc:`AttributeError`错误，可能是你的Django版本与手册不一致。
+    要么切换到旧版本的手册，要么更换成更新的Django版本。
 
-    You must run ``python`` from the same directory :file:`manage.py` is in,
-    or ensure that directory is on the Python path, so that ``import mysite``
-    works.
+    必须保证运行``python`` 时的路径与:file:`manage.py` 所在路径一致，或者那个路径在Python路径之下，
+    只有这样``import mysite``才生效。
 
-    For more information on all of this, see the :doc:`django-admin
+    获取更多的信息，请查看:doc:`django-admin
     documentation </ref/django-admin>`.
 
-Once you're in the shell, explore the :doc:`database API </topics/db/queries>`::
+一旦你进入了shell，查看:doc:`database API </topics/db/queries>`::
 
     >>> from polls.models import Question, Choice   # Import the model classes we just wrote.
 
@@ -439,11 +383,10 @@ Once you're in the shell, explore the :doc:`database API </topics/db/queries>`::
     >>> Question.objects.all()
     <QuerySet [<Question: Question object (1)>]>
 
-Wait a minute. ``<Question: Question object (1)>`` isn't a helpful
-representation of this object. Let's fix that by editing the ``Question`` model
-(in the ``polls/models.py`` file) and adding a
-:meth:`~django.db.models.Model.__str__` method to both ``Question`` and
-``Choice``:
+等一等，``<Question: Question object (1)>`` 的显示并不能很好的表示这个对象。
+我们来通过编辑``Question`` 模型
+(在``polls/models.py`` 文件中)并在``Question`` and
+``Choice``加入:meth:`~django.db.models.Model.__str__` 方法来修复这个问题：
 
 .. snippet::
     :filename: polls/models.py
@@ -460,13 +403,10 @@ representation of this object. Let's fix that by editing the ``Question`` model
         def __str__(self):
             return self.choice_text
 
-It's important to add :meth:`~django.db.models.Model.__str__` methods to your
-models, not only for your own convenience when dealing with the interactive
-prompt, but also because objects' representations are used throughout Django's
-automatically-generated admin.
+加入:meth:`~django.db.models.Model.__str__` 方法对模型来说非常重要，
+不仅仅便于处理交互提示，而且在Django自动生成的admin模块中也要用到它。
 
-Note these are normal Python methods. Let's add a custom method, just for
-demonstration:
+注意它们都是普通的Python方法。我们来添加一个自定义方法，仅仅作为演示：
 
 .. snippet::
     :filename: polls/models.py
@@ -482,14 +422,13 @@ demonstration:
         def was_published_recently(self):
             return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
-Note the addition of ``import datetime`` and ``from django.utils import
-timezone``, to reference Python's standard :mod:`datetime` module and Django's
-time-zone-related utilities in :mod:`django.utils.timezone`, respectively. If
-you aren't familiar with time zone handling in Python, you can learn more in
-the :doc:`time zone support docs </topics/i18n/timezones>`.
+注意 ``import datetime`` 和 ``from django.utils import
+timezone``的引入，是为了引用Python的标准模块:mod:`datetime`和 Django中:mod:`django.utils.timezone`模块的
+time-zone-related 的通用操作。如果对Python中的time zone操作不熟悉，
+请查看:doc:`time zone support docs </topics/i18n/timezones>`。
 
-Save these changes and start a new Python interactive shell by running
-``python manage.py shell`` again::
+保存变动，并开启新的交互式shell环境，运行
+``python manage.py shell`` ::
 
     >>> from polls.models import Question, Choice
 
@@ -567,54 +506,46 @@ Save these changes and start a new Python interactive shell by running
     >>> c = q.choice_set.filter(choice_text__startswith='Just hacking')
     >>> c.delete()
 
-For more information on model relations, see :doc:`Accessing related objects
-</ref/models/relations>`. For more on how to use double underscores to perform
-field lookups via the API, see :ref:`Field lookups <field-lookups-intro>`. For
-full details on the database API, see our :doc:`Database API reference
-</topics/db/queries>`.
+获得更多关于模型关系的信息，请查看:doc:`Accessing related objects
+</ref/models/relations>`。获得更多的如何查找API使用双下划线的信息，请参考：
+ :doc:`Database API reference </topics/db/queries>`.
 
-Introducing the Django Admin
+介绍 Django Admin
 ============================
 
-.. admonition:: Philosophy
+.. admonition:: 哲学
 
-    Generating admin sites for your staff or clients to add, change, and delete
-    content is tedious work that doesn't require much creativity. For that
-    reason, Django entirely automates creation of admin interfaces for models.
+    为员工或客户创建admin网站并对上面的内容进行增删改查是枯燥的，而且并不需要什么创造性。
+    由于这个原因，Dnango完全自动化的为模型创建了admin管理接口。
 
-    Django was written in a newsroom environment, with a very clear separation
-    between "content publishers" and the "public" site. Site managers use the
-    system to add news stories, events, sports scores, etc., and that content is
-    displayed on the public site. Django solves the problem of creating a
-    unified interface for site administrators to edit content.
+    Django是在新闻编辑室写的，“内容出版者”和“公共”站点区分得很清楚。
+    站点管理者使用系统添加故事，事件，体育比赛比分，等，这些内容显示在公共站点上。
+    Django解决了如何为网站管理者创建统一管理接口的问题。
 
-    The admin isn't intended to be used by site visitors. It's for site
-    managers.
+    admin站点不是搭建给普通访问者使用的，而是给站点的管理者使用。
 
-Creating an admin user
+创建一个admin用户
 ----------------------
 
-First we'll need to create a user who can login to the admin site. Run the
-following command:
+首先我们得创建一个用户用以登录admin站点，运行下面的命令：
 
 .. code-block:: console
 
     $ python manage.py createsuperuser
 
-Enter your desired username and press enter.
+输入用户名并回车：
 
 .. code-block:: text
 
     Username: admin
 
-You will then be prompted for your desired email address:
+下一步会提示输入email：
 
 .. code-block:: text
 
     Email address: admin@example.com
 
-The final step is to enter your password. You will be asked to enter your
-password twice, the second time as a confirmation of the first.
+最后一步是输入密码，将被要求输入两次。
 
 .. code-block:: text
 
@@ -622,49 +553,45 @@ password twice, the second time as a confirmation of the first.
     Password (again): *********
     Superuser created successfully.
 
-Start the development server
+启动开发服务器
 ----------------------------
 
-The Django admin site is activated by default. Let's start the development
-server and explore it.
+缺省情况下，Django的admin站点是激活的。让我们启动开发服务器并探索一番。
 
-If the server is not running start it like so:
+如果服务器没有启动，那么这样：
 
 .. code-block:: console
 
     $ python manage.py runserver
 
-Now, open a Web browser and go to "/admin/" on your local domain -- e.g.,
-http://127.0.0.1:8000/admin/. You should see the admin's login screen:
+现在，打开浏览器并转到本机的“/admin/”路径 -- 比如,
+http://127.0.0.1:8000/admin/。你将会看到登录页面：
 
 .. image:: _images/admin01.png
    :alt: Django admin login screen
 
-Since :doc:`translation </topics/i18n/translation>` is turned on by default,
-the login screen may be displayed in your own language, depending on your
-browser's settings and if Django has a translation for this language.
+既然:doc:`translation </topics/i18n/translation>` 缺省情况下是打开的，
+登录屏幕将会显示你自己的语言，这取决于你的浏览器设置和Django是否有该语言的翻译。
 
-Enter the admin site
+进入admin站点
 --------------------
 
-Now, try logging in with the superuser account you created in the previous step.
-You should see the Django admin index page:
+现在，使用之前创建的超级用户账户登录系统，你将看到Django admin站点的首页：
 
 .. image:: _images/admin02.png
    :alt: Django admin index page
 
-You should see a few types of editable content: groups and users. They are
-provided by :mod:`django.contrib.auth`, the authentication framework shipped
-by Django.
+你将看到一些可编辑内容：groups 和 users。
+他们由模块:mod:`django.contrib.auth`提供，该模块是Django的认证框架。
 
-Make the poll app modifiable in the admin
+使得poll app 中的修改在admin中生效
 -----------------------------------------
 
-But where's our poll app? It's not displayed on the admin index page.
+但是我们的poll app在哪呢？它并没有在admin的首页中显示啊。
 
-Just one thing to do: we need to tell the admin that ``Question``
-objects have an admin interface. To do this, open the :file:`polls/admin.py`
-file, and edit it to look like this:
+只有一步需要做：我们需要告诉admin站点``Question``对象有一个admin接口。
+想要如此，打开:file:`polls/admin.py`文件，并如下面所示编辑：
+
 
 .. snippet::
     :filename: polls/admin.py
@@ -675,66 +602,60 @@ file, and edit it to look like this:
 
     admin.site.register(Question)
 
-Explore the free admin functionality
+探索免费的admin功能
 ------------------------------------
 
-Now that we've registered ``Question``, Django knows that it should be displayed on
-the admin index page:
+现在我们已经注册了``Question``， Django 已经知晓了它将显示在admin的主页之上：
 
 .. image:: _images/admin03t.png
    :alt: Django admin index page, now with polls displayed
 
-Click "Questions". Now you're at the "change list" page for questions. This page
-displays all the questions in the database and lets you choose one to change it.
-There's the "What's up?" question we created earlier:
+点击"Questions"。现在你在问题的“change list”页面。
+这个页面显示了数据库中的所有问题并且使得你可以选择其中一个加以编辑。
+里面有一个“what's up?”问题，它是我们早些时候创建的：
 
 .. image:: _images/admin04t.png
    :alt: Polls change list page
 
-Click the "What's up?" question to edit it:
+点击 "What's up?" 问题来编辑它：
 
 .. image:: _images/admin05t.png
    :alt: Editing form for question object
 
-Things to note here:
+注意一下几点：
 
-* The form is automatically generated from the ``Question`` model.
+* 表单自动创建自``Question`` 模型。
 
-* The different model field types (:class:`~django.db.models.DateTimeField`,
-  :class:`~django.db.models.CharField`) correspond to the appropriate HTML
-  input widget. Each type of field knows how to display itself in the Django
-  admin.
+* 不同的域类型(:class:`~django.db.models.DateTimeField`,
+  :class:`~django.db.models.CharField`) 对应不同的HTML输入组件。
+  每一种域类型都知道如何显示在Django的admin站点上。
 
-* Each :class:`~django.db.models.DateTimeField` gets free JavaScript
-  shortcuts. Dates get a "Today" shortcut and calendar popup, and times get
-  a "Now" shortcut and a convenient popup that lists commonly entered times.
+* 每一个:class:`~django.db.models.DateTimeField` 都有免费的JavaScript shortcuts。
+  Date获得"Today"shortcut和日历的弹出框，times获得"Now" shortcut 和一个简便的时间弹出框。
 
-The bottom part of the page gives you a couple of options:
+页面的底部给出了一组选项：
 
-* Save -- Saves changes and returns to the change-list page for this type of
-  object.
+* Save -- 保存更改并返回chang
+e-list页面。
 
-* Save and continue editing -- Saves changes and reloads the admin page for
-  this object.
+* Save and continue editing -- 保存更改并重载该对象的管理页面。
 
-* Save and add another -- Saves changes and loads a new, blank form for this
-  type of object.
+* Save and add another -- 保存更改并加载一个新的，空的该类行对象表单。
 
-* Delete -- Displays a delete confirmation page.
+* Delete -- 显示删除确认页面。
 
-If the value of "Date published" doesn't match the time when you created the
-question in :doc:`Tutorial 1</intro/tutorial01>`, it probably
-means you forgot to set the correct value for the :setting:`TIME_ZONE` setting.
-Change it, reload the page and check that the correct value appears.
+如果"Date published" 的值和你在:doc:`Tutorial 1</intro/tutorial01>`创建question时候的值不一致，
+这可能是因为忘记为:setting:`TIME_ZONE` 设置正确的值。
+改变它，并检查修改后的显示是否正确。
 
-Change the "Date published" by clicking the "Today" and "Now" shortcuts. Then
-click "Save and continue editing." Then click "History" in the upper right.
-You'll see a page listing all changes made to this object via the Django admin,
-with the timestamp and username of the person who made the change:
+点击"Today"和"Now"shortcuts 改变"Date published" 。
+然后点击"Save and continue editing"。
+然后点击右上部的"History"。
+你将会看到页面罗列了这个对象在Django admin中的所有变化记录，
+记录包含了时间戳和做出修改的用户名。
 
 .. image:: _images/admin06t.png
    :alt: History page for question object
 
-When you're comfortable with the models API and have familiarized yourself with
-the admin site, read :doc:`part 3 of this tutorial</intro/tutorial03>` to learn
-about how to add more views to our polls app.
+当你对模型相关API和admin站点熟悉后，阅读 :doc:`part 3 of this tutorial</intro/tutorial03>`
+来学习如何将更多的视图加入到polls app中来。

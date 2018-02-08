@@ -1,26 +1,24 @@
 ====================
-Django documentation
+Django 文档
 ====================
 
-.. rubric:: Everything you need to know about Django.
+.. rubric:: 你所需要知道的关于Django的一切
 
-Getting help
+获得帮助
 ============
 
-Having trouble? We'd like to help!
+有困难？我们很乐意排忧解难！
 
-* Try the :doc:`FAQ <faq/index>` -- it's got answers to many common questions.
+* 试试 :doc:`FAQ <faq/index>` -- 里面有很多通用问题的答案。
 
-* Looking for specific information? Try the :ref:`genindex`, :ref:`modindex` or
-  the :doc:`detailed table of contents <contents>`.
+* 查找特定信息？试试:ref:`genindex`, :ref:`modindex` 或者
+  :doc:`detailed table of contents <contents>`.
 
-* Search for information in the archives of the |django-users| mailing list, or
-  `post a question`_.
+* 搜索|django-users|的邮件列表档案信息，或者`post a question`_.
 
-* Ask a question in the `#django IRC channel`_, or search the `IRC logs`_ to see
-  if it's been asked before.
+*  在`#django IRC channel`_中询问问题，或者搜索`IRC logs`_查看是否有人已经问过相同的问题。
 
-* Report bugs with Django in our `ticket tracker`_.
+*  在`ticket tracker`_中报告bug。
 
 .. _archives: https://groups.google.com/group/django-users/
 .. _post a question: https://groups.google.com/d/forum/django-users
@@ -28,10 +26,10 @@ Having trouble? We'd like to help!
 .. _IRC logs: https://botbot.me/freenode/django/
 .. _ticket tracker: https://code.djangoproject.com/
 
-How the documentation is organized
+文档是如何组织的？
 ==================================
 
-Django has a lot of documentation. A high-level overview of how it's organized
+Django拥有大量的文档。 A high-level overview of how it's organized
 will help you know where to look for certain things:
 
 * :doc:`Tutorials </intro/index>` take you by the hand through a series of
