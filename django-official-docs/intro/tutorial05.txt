@@ -33,26 +33,18 @@
 
 自动化测试切实能够在极短的时间内帮你完成以上的工作。如果有哪里出了问题，它也能保你定位到引发问题的代码是在哪里。
 
-Sometimes it may seem a chore to tear yourself away from your productive,
-creative programming work to face the unglamorous and unexciting business
-of writing tests, particularly when you know your code is working properly.
+停下编写代码来做其他的事情似乎让然觉得厌烦，尤其是投入到单调乏味的测试工作中，特别是在你的代码明明运行良好的时候。
 
-However, the task of writing tests is a lot more fulfilling than spending hours
-testing your application manually or trying to identify the cause of a
-newly-introduced problem.
+然而，编写测试依然比化肥数小时通过手工测试的方法寻找一个新一如的bug要让人感到轻松。
 
-Tests don't just identify problems, they prevent them
+测试不仅仅起到定位问题的作用，测试能够证实它们
 ​~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It's a mistake to think of tests merely as a negative aspect of development.
+把测试工作当做开发过程中令人厌烦的事情是错误的。
 
-Without tests, the purpose or intended behavior of an application might be
-rather opaque. Even when it's your own code, you will sometimes find yourself
-poking around in it trying to find out what exactly it's doing.
+如果没有测试，开发出来的软件是否达到了预期的效果就是无法证实的。即使这些代码都是你亲自编写的，你还是会为了确认软件的真实行为而手动在各项功能中试来试去。
 
-Tests change that; they light up your code from the inside, and when something
-goes wrong, they focus light on the part that has gone wrong - *even if you
-hadn't even realized it had gone wrong*.
+测试能够改变这种情况，它从内部检视你的代码，一旦有什么地方不对劲，它就会明确的指出出问题的地方。（即使在你还没有发现到你的代码已经有bug了的时候）
 
 Tests make your code more attractive
 ​~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
