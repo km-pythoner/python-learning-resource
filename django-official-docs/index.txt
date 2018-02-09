@@ -119,29 +119,28 @@ Django提供了一个抽象层(the "models") 以构建和操控Web应用程序�
 视图层
 ==============
 
-Django has the concept of "views" to encapsulate the logic responsible for
-processing a user's request and for returning the response. Find all you need
-to know about views via the links below:
+Django使用“视图”的概念来封装用户请求和返回响应的逻辑。
+从下面的链接中找到有关视图的一切信息：
 
-* **The basics:**
+* **基础:**
   :doc:`URLconfs <topics/http/urls>` |
   :doc:`View functions <topics/http/views>` |
   :doc:`Shortcuts <topics/http/shortcuts>` |
   :doc:`Decorators <topics/http/decorators>`
 
-* **Reference:**
+* **引用:**
   :doc:`Built-in Views <ref/views>` |
   :doc:`Request/response objects <ref/request-response>` |
   :doc:`TemplateResponse objects <ref/template-response>`
 
-* **File uploads:**
+* **文件上传:**
   :doc:`Overview <topics/http/file-uploads>` |
   :doc:`File objects <ref/files/file>` |
   :doc:`Storage API <ref/files/storage>` |
   :doc:`Managing files <topics/files>` |
   :doc:`Custom storage <howto/custom-file-storage>`
 
-* **Class-based views:**
+* **基于类的视图:**
   :doc:`Overview <topics/class-based-views/index>` |
   :doc:`Built-in display views <topics/class-based-views/generic-display>` |
   :doc:`Built-in editing views <topics/class-based-views/generic-editing>` |
@@ -149,98 +148,93 @@ to know about views via the links below:
   :doc:`API reference <ref/class-based-views/index>` |
   :doc:`Flattened index<ref/class-based-views/flattened-index>`
 
-* **Advanced:**
+* **高级部分:**
   :doc:`Generating CSV <howto/outputting-csv>` |
   :doc:`Generating PDF <howto/outputting-pdf>`
 
-* **Middleware:**
+* **中间件:**
   :doc:`Overview <topics/http/middleware>` |
   :doc:`Built-in middleware classes <ref/middleware>`
 
-The template layer
+模板层
 ==================
 
-The template layer provides a designer-friendly syntax for rendering the
-information to be presented to the user. Learn how this syntax can be used by
-designers and how it can be extended by programmers:
+模板层提供了对设计者友好的语法用于将信息渲染给用户。
+学习设计者如何使用该语法，程序员如何进行功能扩展：
 
-* **The basics:**
+* **基础:**
   :doc:`Overview <topics/templates>`
 
-* **For designers:**
+* **给设计者:**
   :doc:`Language overview <ref/templates/language>` |
   :doc:`Built-in tags and filters <ref/templates/builtins>` |
   :doc:`Humanization <ref/contrib/humanize>`
 
-* **For programmers:**
+* **给程序员:**
   :doc:`Template API <ref/templates/api>` |
   :doc:`Custom tags and filters <howto/custom-template-tags>`
 
-Forms
+表单
 =====
 
-Django provides a rich framework to facilitate the creation of forms and the
-manipulation of form data.
+Django提供了丰富的框架以创建表单和操控表单数据。
 
-* **The basics:**
+* **基础:**
   :doc:`Overview <topics/forms/index>` |
   :doc:`Form API <ref/forms/api>` |
   :doc:`Built-in fields <ref/forms/fields>` |
   :doc:`Built-in widgets <ref/forms/widgets>`
 
-* **Advanced:**
+* **高级:**
   :doc:`Forms for models <topics/forms/modelforms>` |
   :doc:`Integrating media <topics/forms/media>` |
   :doc:`Formsets <topics/forms/formsets>` |
   :doc:`Customizing validation <ref/forms/validation>`
 
-The development process
+开发流程
 =======================
 
-Learn about the various components and tools to help you in the development and
-testing of Django applications:
+学习各种组件和工具以助于Django 应用程序的开发和测试：
 
-* **Settings:**
+* **设置:**
   :doc:`Overview <topics/settings>` |
   :doc:`Full list of settings <ref/settings>`
 
-* **Applications:**
+* **应用程序:**
   :doc:`Overview <ref/applications>`
 
-* **Exceptions:**
+* **异常:**
   :doc:`Overview <ref/exceptions>`
 
-* **django-admin and manage.py:**
+* **django-admin 和 manage.py:**
   :doc:`Overview <ref/django-admin>` |
   :doc:`Adding custom commands <howto/custom-management-commands>`
 
-* **Testing:**
+* **测试:**
   :doc:`Introduction <topics/testing/index>` |
   :doc:`Writing and running tests <topics/testing/overview>` |
   :doc:`Included testing tools <topics/testing/tools>` |
   :doc:`Advanced topics <topics/testing/advanced>`
 
-* **Deployment:**
+* **部署:**
   :doc:`Overview <howto/deployment/index>` |
   :doc:`WSGI servers <howto/deployment/wsgi/index>` |
   :doc:`Deploying static files <howto/static-files/deployment>` |
   :doc:`Tracking code errors by email <howto/error-reporting>`
 
-The admin
+admin模块
 =========
 
-Find all you need to know about the automated admin interface, one of Django's
-most popular features:
+查找有关自动化admin接口的一切消息，它是Django最流行的特性：
 
 * :doc:`Admin site <ref/contrib/admin/index>`
 * :doc:`Admin actions <ref/contrib/admin/actions>`
 * :doc:`Admin documentation generator<ref/contrib/admin/admindocs>`
 
-Security
+安全
 ========
 
-Security is a topic of paramount importance in the development of Web
-applications and Django provides multiple protection tools and mechanisms:
+安全是Web应用程序开发中最至上的话题，Django提供了多种保护工具和机制：
 
 * :doc:`Security overview <topics/security>`
 * :doc:`Disclosed security issues in Django <releases/security>`
@@ -249,12 +243,10 @@ applications and Django provides multiple protection tools and mechanisms:
 * :doc:`Cryptographic signing <topics/signing>`
 * :ref:`Security Middleware <security-middleware>`
 
-Internationalization and localization
+国际化和本地化
 =====================================
 
-Django offers a robust internationalization and localization framework to
-assist you in the development of applications for multiple languages and world
-regions:
+Django提供了健壮的国际化和本地化框架帮助你开发多语言和地区的应用程序：
 
 * :doc:`Overview <topics/i18n/index>` |
   :doc:`Internationalization <topics/i18n/translation>` |
@@ -262,28 +254,25 @@ regions:
   :doc:`Localized Web UI formatting and form input <topics/i18n/formatting>`
 * :doc:`Time zones </topics/i18n/timezones>`
 
-Performance and optimization
+执行和优化
 ============================
 
-There are a variety of techniques and tools that can help get your code running
-more efficiently - faster, and using fewer system resources.
+有一系列的技术和工具可以帮助你的代码运行时更有效率 - 更快，并且耗费更少的系统资源。
 
 * :doc:`Performance and optimization overview <topics/performance>`
 
-Geographic framework
+地理学框架
 ====================
 
-:doc:`GeoDjango <ref/contrib/gis/index>` intends to be a world-class geographic
-Web framework. Its goal is to make it as easy as possible to build GIS Web
-applications and harness the power of spatially enabled data.
+:doc:`GeoDjango <ref/contrib/gis/index>` 趋向于成为一个世界级的地理学Web框架。
+它的目标是尽可能的简化构建GIS站点应用和利用空间启用数据的能力。
 
-Common Web application tools
+通用Web应用工具
 ============================
 
-Django offers multiple tools commonly needed in the development of Web
-applications:
+Django提供了许多Web应用开发中的通用工具：
 
-* **Authentication:**
+* **认证:**
   :doc:`Overview <topics/auth/index>` |
   :doc:`Using the authentication system <topics/auth/default>` |
   :doc:`Password management <topics/auth/passwords>` |
@@ -301,10 +290,10 @@ applications:
 * :doc:`Static files management <ref/contrib/staticfiles>`
 * :doc:`Data validation <ref/validators>`
 
-Other core functionalities
+其它核心功能
 ==========================
 
-Learn about some other core functionalities of the Django framework:
+学习其它关于Django框架的核心功能。
 
 * :doc:`Conditional content processing <topics/conditional-view-processing>`
 * :doc:`Content types and generic relations <ref/contrib/contenttypes>`
@@ -315,13 +304,12 @@ Learn about some other core functionalities of the Django framework:
 * :doc:`The sites framework <ref/contrib/sites>`
 * :doc:`Unicode in Django <ref/unicode>`
 
-The Django open-source project
+Django开源工程
 ==============================
 
-Learn about the development process for the Django project itself and about how
-you can contribute:
+学习Django工程本身的开发过程和如何贡献源代码：
 
-* **Community:**
+* **社区:**
   :doc:`How to get involved <internals/contributing/index>` |
   :doc:`The release process <internals/release-process>` |
   :doc:`Team organization <internals/organization>` |
@@ -329,16 +317,16 @@ you can contribute:
   :doc:`Security policies <internals/security>` |
   :doc:`Mailing lists <internals/mailing-lists>`
 
-* **Design philosophies:**
+* **设计哲学:**
   :doc:`Overview <misc/design-philosophies>`
 
-* **Documentation:**
+* **文档:**
   :doc:`About this documentation <internals/contributing/writing-documentation>`
 
-* **Third-party distributions:**
+* **第三方分布:**
   :doc:`Overview <misc/distributions>`
 
-* **Django over time:**
+* **Django历程:**
   :doc:`API stability <misc/api-stability>` |
   :doc:`Release notes and upgrading instructions <releases/index>` |
   :doc:`Deprecation Timeline <internals/deprecation>`
