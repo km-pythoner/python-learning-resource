@@ -46,25 +46,17 @@
 
 测试能够改变这种情况，它从内部检视你的代码，一旦有什么地方不对劲，它就会明确的指出出问题的地方。（即使在你还没有发现到你的代码已经有bug了的时候）
 
-Tests make your code more attractive
+测试让你的代码更优雅
 ​~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You might have created a brilliant piece of software, but you will find that
-many other developers will simply refuse to look at it because it lacks tests;
-without tests, they won't trust it. Jacob Kaplan-Moss, one of Django's
-original developers, says "Code without tests is broken by design."
+或许在你编写的软件中有一些亮点，但是你发现因为它们缺乏对应的测试其他的开发者要复用他们很困难；没有测试，他们不能完全信任这些代码。Jacob Kaplan-Moss，作为 Django 的初始开发者之一，曾今说过“没有测试的代码就是未经设计的。“
 
-That other developers want to see tests in your software before they take it
-seriously is yet another reason for you to start writing tests.
+驱使你开始为代码编写测试的另一个原因在于，其他的开发者在复用你的代码之前，都强烈希望看到对应的测试。
 
-Tests help teams work together
+测试帮助团队更好的协作
 ​~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The previous points are written from the point of view of a single developer
-maintaining an application. Complex applications will be maintained by teams.
-Tests guarantee that colleagues don't inadvertently break your code (and that
-you don't break theirs without knowing). If you want to make a living as a
-Django programmer, you must be good at writing tests!
+前边提到的各个视角都是从耽搁开发者维护一个软件的角度出发。更复杂一些的软件则需要一个团队来进行维护。测试可以确保其他成员不会一不留神破坏了你的代码(同样也防止你在不知情的情况下破坏了其他人的代码)。如果你想要成为一个 Django 开发者，你必须善于编写测试！
 
 Basic testing strategies
 ========================
