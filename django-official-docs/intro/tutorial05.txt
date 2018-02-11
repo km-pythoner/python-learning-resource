@@ -58,54 +58,41 @@
 
 前边提到的各个视角都是从耽搁开发者维护一个软件的角度出发。更复杂一些的软件则需要一个团队来进行维护。测试可以确保其他成员不会一不留神破坏了你的代码(同样也防止你在不知情的情况下破坏了其他人的代码)。如果你想要成为一个 Django 开发者，你必须善于编写测试！
 
-Basic testing strategies
+基本的测试策略
 ========================
 
-There are many ways to approach writing tests.
+这里有一些编写测试的方法。
 
-Some programmers follow a discipline called "`test-driven development`_"; they
-actually write their tests before they write their code. This might seem
-counter-intuitive, but in fact it's similar to what most people will often do
-anyway: they describe a problem, then create some code to solve it. Test-driven
-development simply formalizes the problem in a Python test case.
+一些程序员遵循叫做"`测试驱动开发”的开发方式`_"；他们在编码之前先编写测试。这可能和我们的直觉相反，但是确实人们是按照类似的方法做：他们描述一个问题，然后编写一些代码来解决它。测试驱动开发在的方式在 Python 的测试用例中分方便使用。
 
-More often, a newcomer to testing will create some code and later decide that
-it should have some tests. Perhaps it would have been better to write some
-tests earlier, but it's never too late to get started.
+进一步来说，一个测试技术的初学者会先写一些代码，然后决定哪一部分代码需要测试。也许你觉得要是之前就开始用测试的开发方式就好了，但是现在开始也不算晚。
 
-Sometimes it's difficult to figure out where to get started with writing tests.
-If you have written several thousand lines of Python, choosing something to
-test might not be easy. In such a case, it's fruitful to write your first test
-the next time you make a change, either when you add a new feature or fix a bug.
+有时候要找到从什么地方开始写测试是有一些困难的。如果你写过很多的 Python 代码，找到需要测试的地方不会太难。这样，当你要修改代码的时候你就会发现之前写的测试时非常有价值的，不管这些改变是增加一个新功能还是修复一个 bug。
 
-So let's do that right away.
+所以让我现在就开始吧。
 
 .. _test-driven development: https://en.wikipedia.org/wiki/Test-driven_development
 
-Writing our first test
+编写我们的第一个测试
 ======================
 
-We identify a bug
+我们来识别一个 bug
 -----------------
 
-Fortunately, there's a little bug in the ``polls`` application for us to fix
-right away: the ``Question.was_published_recently()`` method returns ``True`` if
-the ``Question`` was published within the last day (which is correct) but also if
-the ``Question``’s ``pub_date`` field is in the future (which certainly isn't).
+很幸运，在我们的``投票``应用中有一个小 bug 正等待我们修复：``Question.was_published_recently()`` 方法的返回值为 ``True`` 当 ``Question`` 在最后一天发布出来的时候（这个逻辑是正确的）但是当 ``Question``的 ``pub_date`` 字段是一个未来的日期它也会返回``True`` (这时就不对了).
 
-To check if the bug really exists, using the Admin create a question whose date
-lies in the future and check the method using the :djadmin:`shell`::
+为了检查这个 bug 是否真的存在，可是使用 Admin 创建一个问题，并将问题的发布日期设置为一个未来的日期，并且通过 :djadmin:`shell`::来检查这个方法
 
     >>> import datetime
     >>> from django.utils import timezone
     >>> from polls.models import Question
-    >>> # create a Question instance with pub_date 30 days in the future
+    >>> # 创建一个 Question 实例并将 pub_date 设为30天后的日期
     >>> future_question = Question(pub_date=timezone.now() + datetime.timedelta(days=30))
-    >>> # was it published recently?
+    >>> # 它在最近被发布了么?
     >>> future_question.was_published_recently()
     True
 
-Since things in the future are not 'recent', this is clearly wrong.
+既然我们将它设置在30天后而不是`近期`，那么这个结果肯定是错误的。
 
 Create a test to expose the bug
 -------------------------------
