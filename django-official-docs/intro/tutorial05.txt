@@ -171,10 +171,8 @@
 修复 bug
 --------------
 
-We already know what the problem is: ``Question.was_published_recently()`` should
-return ``False`` if its ``pub_date`` is in the future. Amend the method in
-``models.py``, so that it will only return ``True`` if the date is also in the
-past:
+我们已经知道了问题是: ``Question.was_published_recently()`` 方法应当返回 ``False`` 当``pub_date`` 字段是一个未来的日期时。 修改
+``models.py``文件中的方法, 让它只返回 ``True`` 即使日期是一个过去的日期:
 
 .. snippet::
     :filename: polls/models.py
@@ -183,7 +181,7 @@ past:
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
-and run the test again::
+然后再次运行测试::
 
     Creating test database for alias 'default'...
     System check identified no issues (0 silenced).
@@ -194,13 +192,9 @@ and run the test again::
     OK
     Destroying test database for alias 'default'...
 
-After identifying a bug, we wrote a test that exposes it and corrected the bug
-in the code so our test passes.
+在我们发现一个 bug 之后，我们写一个测试来确认它，然后修改我们的代码让代码通过测试。
 
-Many other things might go wrong with our application in the future, but we can
-be sure that we won't inadvertently reintroduce this bug, because simply
-running the test will warn us immediately. We can consider this little portion
-of the application pinned down safely forever.
+将来我们的程序还会发生各种各样的 bug ，但是我们可以肯定这个 bug 不会再被引入，因为它一旦发生就会立即被我们之前写的测试发现并提醒我们。有了测试我们就一劳永逸的解决了这个问题。
 
 More comprehensive tests
 ------------------------
