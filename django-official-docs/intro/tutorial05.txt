@@ -94,17 +94,14 @@
 
 既然我们将它设置在30天后而不是`近期`，那么这个结果肯定是错误的。
 
-Create a test to expose the bug
+创建一个测试来发现 bug
 -------------------------------
 
-What we've just done in the :djadmin:`shell` to test for the problem is exactly
-what we can do in an automated test, so let's turn that into an automated test.
+我们刚通过 :djadmin:`shell` 所做的，也是我们希望通过自动化测试完成的事情，现在就让我们把它转化为自动化的方式吧。
 
-A conventional place for an application's tests is in the application's
-``tests.py`` file; the testing system will automatically find tests in any file
-whose name begins with ``test``.
+习惯上我们会吧一个软件的测试放在这个工程的``tests.py`` 文件里; 测试框架将会在任何以``test``开头的文件中加载我们写的测试。
 
-Put the following in the ``tests.py`` file in the ``polls`` application:
+在``polls``项目的``tests.py``文件中输入一下的代码：
 
 .. snippet::
     :filename: polls/tests.py
@@ -121,26 +118,22 @@ Put the following in the ``tests.py`` file in the ``polls`` application:
 
         def test_was_published_recently_with_future_question(self):
             """
-            was_published_recently() returns False for questions whose pub_date
-            is in the future.
+            was_published_recently() 方法当问题的 pub_date (发布日期)字段是未来的日期是返回 False。
             """
             time = timezone.now() + datetime.timedelta(days=30)
             future_question = Question(pub_date=time)
             self.assertIs(future_question.was_published_recently(), False)
 
-What we have done here is created a :class:`django.test.TestCase` subclass
-with a method that creates a ``Question`` instance with a ``pub_date`` in the
-future. We then check the output of ``was_published_recently()`` - which
-*ought* to be False.
+这里，我们所做的事情是，创建了一个 :class:`django.test.TestCase` 类的子类，并在里边写了一个方法。这个方法创建一个``Question``实例并给它设置一个未来的发布日期。然后，我们检查``was_published_recently()`` 方法的输出- 看输出*是否*是False.
 
-Running tests
+运行测试
 -------------
 
-In the terminal, we can run our test::
+通过命令行，我们可与运行我们编写的测试::
 
     $ python manage.py test polls
 
-and you'll see something like::
+然后你应该看到类似下方的文字显示::
 
     Creating test database for alias 'default'...
     System check identified no issues (0 silenced).
@@ -159,27 +152,23 @@ and you'll see something like::
     FAILED (failures=1)
     Destroying test database for alias 'default'...
 
-What happened is this:
+这个命令所做的事情是:
 
-* ``python manage.py test polls`` looked for tests in the ``polls`` application
+* ``python manage.py test polls`` 命令寻找 ``polls`` 应用里边我们编写的测试
 
-* it found a subclass of the :class:`django.test.TestCase` class
+* 它找到的是 :class:`django.test.TestCase` 类的子类
 
-* it created a special database for the purpose of testing
+* 为了测试它创建了一个特殊的数据库
 
-* it looked for test methods - ones whose names begin with ``test``
+* 它寻找需要运行的测试方法 - 测试方法都以 ``test`` 作为前缀
 
-* in ``test_was_published_recently_with_future_question`` it created a ``Question``
-  instance whose ``pub_date`` field is 30 days in the future
+* 在 ``test_was_published_recently_with_future_question`` 方法中创建了一个 ``Question`` 对象的实例，并给他的 ``pub_date`` 字段设置为30天以后的日期
 
-* ... and using the ``assertIs()`` method, it discovered that its
-  ``was_published_recently()`` returns ``True``, though we wanted it to return
-  ``False``
+* ... 然后使用 ``assertIs()`` 方法，它可会发现 ``was_published_recently()`` 方法的返回值是 ``True``， 尽管我们希望这个返回值是 ``False``
 
-The test informs us which test failed and even the line on which the failure
-occurred.
+这个测试告诉我们哪一个测试没有通过，甚至是因为哪一行代码导致的失败。
 
-Fixing the bug
+修复 bug
 --------------
 
 We already know what the problem is: ``Question.was_published_recently()`` should
