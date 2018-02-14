@@ -196,23 +196,21 @@
 
 将来我们的程序还会发生各种各样的 bug ，但是我们可以肯定这个 bug 不会再被引入，因为它一旦发生就会立即被我们之前写的测试发现并提醒我们。有了测试我们就一劳永逸的解决了这个问题。
 
-More comprehensive tests
+更复杂一些的测试
 ------------------------
 
-While we're here, we can further pin down the ``was_published_recently()``
-method; in fact, it would be positively embarrassing if in fixing one bug we had
-introduced another.
+既然我们已经做了这些测试工作，我们可以进一步的加强 ``was_published_recently()``
+方法; 实际上, 当我们修复一个 bug 同时又引入新的 bug 这是很令人沮丧的。
 
-Add two more test methods to the same class, to test the behavior of the method
-more comprehensively:
+给同一个类再增加两个测试方法，主要是针对更复杂一些的情况:
 
 .. snippet::
     :filename: polls/tests.py
 
     def test_was_published_recently_with_old_question(self):
         """
-        was_published_recently() returns False for questions whose pub_date
-        is older than 1 day.
+        was_published_recently() 返回 False 当 questions 的 pub_date
+        是一天之前的日期。
         """
         time = timezone.now() - datetime.timedelta(days=1, seconds=1)
         old_question = Question(pub_date=time)
@@ -220,40 +218,31 @@ more comprehensively:
 
     def test_was_published_recently_with_recent_question(self):
         """
-        was_published_recently() returns True for questions whose pub_date
-        is within the last day.
+        was_published_recently() 返回 True 当 questions 的 pub_date
+        是最近一天的日期。
         """
         time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
 
-And now we have three tests that confirm that ``Question.was_published_recently()``
-returns sensible values for past, recent, and future questions.
+这样我们就有了三个测试用于确认 ``Question.was_published_recently()``
+方法的返回值在发布日期是过去、现在、将来三种情况下都是正确的。
 
-Again, ``polls`` is a simple application, but however complex it grows in the
-future and whatever other code it interacts with, we now have some guarantee
-that the method we have written tests for will behave in expected ways.
+再次提示, ``polls`` 是一个简单的应用，但是将来它可能会变的复杂，不管后续它会增加多少代码，对于那些编写了响应测试的方法我们可以保证他们依然是按照我们的预期在工作的。
 
-Test a view
+测试视图
 ===========
 
-The polls application is fairly undiscriminating: it will publish any question,
-including ones whose ``pub_date`` field lies in the future. We should improve
-this. Setting a ``pub_date`` in the future should mean that the Question is
-published at that moment, but invisible until then.
+我们编写的投票应用非常的机械：他会发布任何的问题，哪怕这个问题设置的发布日期是将来的日子。我们应当改进它。把 ``pub_date`` 设置为一个将来的日期，应当意味着这个问题虽然立即被发布，但是在将来他再能被看到。
 
-A test for a view
+一个针对视图的测试
 -----------------
 
-When we fixed the bug above, we wrote the test first and then the code to fix
-it. In fact that was a simple example of test-driven development, but it
-doesn't really matter in which order we do the work.
+当我们修复上边提到的 bug 时，我们先编写测试然后再修复 bug。实际上这是一个测试驱动开的小例子，但是它是实际工作中的工作顺序还是有些区别的。
 
-In our first test, we focused closely on the internal behavior of the code. For
-this test, we want to check its behavior as it would be experienced by a user
-through a web browser.
+在我们的第一个测试中，我们主要关注代码的内部逻辑。现在，我们想要关注的是它通过浏览器给用户呈现的内容是否是我们襄阳展现的。
 
-Before we try to fix anything, let's have a look at the tools at our disposal.
+在我们动手修复任何东西之前，让我们先来看看我们有什么工具可用。
 
 The Django test client
 ----------------------
