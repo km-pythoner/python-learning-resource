@@ -244,49 +244,37 @@
 
 在我们动手修复任何东西之前，让我们先来看看我们有什么工具可用。
 
-The Django test client
+Django 的测试客户端
 ----------------------
 
-Django provides a test :class:`~django.test.Client` to simulate a user
-interacting with the code at the view level.  We can use it in ``tests.py``
-or even in the :djadmin:`shell`.
+Django 提供了一个测试类 :class:`~django.test.Client` 可以通过编写代码模拟用户在与视图的交互行为。我们可以在 ``tests.py`` 里使用它或者在 :djadmin:`shell` 里使用也可以。
 
-We will start again with the :djadmin:`shell`, where we need to do a couple of
-things that won't be necessary in ``tests.py``. The first is to set up the test
-environment in the :djadmin:`shell`::
+我们将再次使用 :djadmin:`shell`, 这里我们将会用到一些在 ``tests.py`` 里不会用到的东西。首先是在 :djadmin:`shell` 里设置测试环境:: 
 
     >>> from django.test.utils import setup_test_environment
     >>> setup_test_environment()
 
-:meth:`~django.test.utils.setup_test_environment` installs a template renderer
-which will allow us to examine some additional attributes on responses such as
-``response.context`` that otherwise wouldn't be available. Note that this
-method *does not* setup a test database, so the following will be run against
-the existing database and the output may differ slightly depending on what
-questions you already created. You might get unexpected results if your
-``TIME_ZONE`` in ``settings.py`` isn't correct. If you don't remember setting
-it earlier, check it before continuing.
+:meth:`~django.test.utils.setup_test_environment` 方法会安装用于渲染的模板，通过他我们可以验证一些在响应中的附加属性例如
+``response.context`` that otherwise wouldn't be available. 注意这个方法*不会*设置测试的数据库，所以后续的测试将会运行在工程对应的数据库上，这回导致你获得的输出有些不一样，具体怎么不一样取决于你所创建的问题。你可能会获得一个异常的返回值如果你在 ``settings.py`` 里的 ``TIME_ZONE`` 设置的不正确。 如果你之前忘了设置它，在继续之前最好检查一下。
 
-Next we need to import the test client class (later in ``tests.py`` we will use
-the :class:`django.test.TestCase` class, which comes with its own client, so
-this won't be required)::
+接下来我们需要引入测试客户端类 (稍后再 ``tests.py`` 里我们将使用 :class:`django.test.TestCase` 类，这个类包含了一个自己的客户端，所以不需要再引入)::
 
     >>> from django.test import Client
     >>> # create an instance of the client for our use
     >>> client = Client()
 
-With that ready, we can ask the client to do some work for us::
+做好了这些，我们就能让测试客户端为我们做些工作了::
 
-    >>> # get a response from '/'
+    >>> # 从 '/'(译注：应用的根路径)获取响应对象
     >>> response = client.get('/')
     Not Found: /
-    >>> # we should expect a 404 from that address; if you instead see an
-    >>> # "Invalid HTTP_HOST header" error and a 400 response, you probably
-    >>> # omitted the setup_test_environment() call described earlier.
+    >>> # 方位这个路径我们希望看到一个404错误；如果你看到的是
+    >>> # "Invalid HTTP_HOST header" 错误伴随这一个400的响应，你可能
+    >>> # 忘记了调用之前提到的 setup_test_environment() 方法。
     >>> response.status_code
     404
-    >>> # on the other hand we should expect to find something at '/polls/'
-    >>> # we'll use 'reverse()' rather than a hardcoded URL
+    >>> # 另一方面我们希望访问 '/polls/' 路径是获得一些反馈信息
+    >>> # 我们将使用 'reverse()' 方法而不再直接写 URL 路径
     >>> from django.urls import reverse
     >>> response = client.get(reverse('polls:index'))
     >>> response.status_code
