@@ -284,14 +284,12 @@ Django 提供了一个测试类 :class:`~django.test.Client` 可以通过编写�
     >>> response.context['latest_question_list']
     <QuerySet [<Question: What's up?>]>
 
-Improving our view
+改进我们的视图
 ------------------
 
-The list of polls shows polls that aren't published yet (i.e. those that have a
-``pub_date`` in the future). Let's fix that.
-
-In :doc:`Tutorial 4 </intro/tutorial04>` we introduced a class-based view,
-based on :class:`~django.views.generic.list.ListView`:
+投票列表显示了尚未发布的投票事项（即使这些投票的 ``pub_date`` 是将来的日期)。 让我们来修复它。
+ 
+在 :doc:`Tutorial 4 </intro/tutorial04>` 中我们介绍了基于磊的视图，基于:class:`~django.views.generic.list.ListView` 类:
 
 .. snippet::
     :filename: polls/views.py
@@ -304,32 +302,28 @@ based on :class:`~django.views.generic.list.ListView`:
             """Return the last five published questions."""
             return Question.objects.order_by('-pub_date')[:5]
 
-We need to amend the ``get_queryset()`` method and change it so that it also
-checks the date by comparing it with ``timezone.now()``. First we need to add
-an import:
+我们需要修改 ``get_queryset()`` 方法让它依据 ``timezone.now()`` 方法获取的当前时间来做校验。首先我们需要增加一个引用:
 
 .. snippet::
     :filename: polls/views.py
 
     from django.utils import timezone
 
-and then we must amend the ``get_queryset`` method like so:
+然后我们需要修改 ``get_queryset`` 方法，修改结果如下:
 
 .. snippet::
     :filename: polls/views.py
 
     def get_queryset(self):
         """
-        Return the last five published questions (not including those set to be
-        published in the future).
+        返回最近的五个法保护的问题（不包括那刺耳被设置为
+        在将来的日期发布的问题）。
         """
         return Question.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
 
-``Question.objects.filter(pub_date__lte=timezone.now())`` returns a queryset
-containing ``Question``\s whose ``pub_date`` is less than or equal to - that
-is, earlier than or equal to - ``timezone.now``.
+``Question.objects.filter(pub_date__lte=timezone.now())`` 返回一个查询结果集其中包含的``Question``都是 ``pub_date`` 小于等于 -及早于或等于 - ``timezone.now`` 的.
 
 Testing our new view
 --------------------
