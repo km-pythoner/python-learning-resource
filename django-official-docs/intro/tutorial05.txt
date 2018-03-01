@@ -420,12 +420,10 @@ Django 提供了一个测试类 :class:`~django.test.Client` 可以通过编写�
 
 这一切。实际上，我们就是使用测试来模拟了一个过程，管理员录入然后用户通过网站浏览，并且检查系统的每个改变是否都被正确分反映出来，结果是否符合我们的预期。
 
-Testing the ``DetailView``
+测试 ``详情视图``
 --------------------------
 
-What we have works well; however, even though future questions don't appear in
-the *index*, users can still reach them if they know or guess the right URL. So
-we need to add a similar  constraint to ``DetailView``:
+目前为止我们做的都还不错；然而，即使将来的问题不会出现在 *索引* 页，用户如果知道或者猜到 URL 地址还是能找到他们。所以我们需要给 ``详情视图`` 加上类似的限制条件：
 
 .. snippet::
     :filename: polls/views.py
@@ -434,13 +432,11 @@ we need to add a similar  constraint to ``DetailView``:
         ...
         def get_queryset(self):
             """
-            Excludes any questions that aren't published yet.
+            排除任何尚未发布的问题。
             """
             return Question.objects.filter(pub_date__lte=timezone.now())
 
-And of course, we will add some tests, to check that a ``Question`` whose
-``pub_date`` is in the past can be displayed, and that one with a ``pub_date``
-in the future is not:
+当然，我们仍会增加一些测试，用户检查一个已经发布的 ``问题`` 能够显示，一个尚未发布的则不会：
 
 .. snippet::
     :filename: polls/tests.py
@@ -448,8 +444,7 @@ in the future is not:
     class QuestionDetailViewTests(TestCase):
         def test_future_question(self):
             """
-            The detail view of a question with a pub_date in the future
-            returns a 404 not found.
+            一个问题的发布日期是在将来，那么他的详细视图将返回一个资源未找到的404错误。
             """
             future_question = create_question(question_text='Future question.', days=5)
             url = reverse('polls:detail', args=(future_question.id,))
@@ -458,38 +453,25 @@ in the future is not:
 
         def test_past_question(self):
             """
-            The detail view of a question with a pub_date in the past
-            displays the question's text.
+            一个已经发布的问题，它的详细视图则会显示问题对应的文本信息。
             """
             past_question = create_question(question_text='Past Question.', days=-5)
             url = reverse('polls:detail', args=(past_question.id,))
             response = self.client.get(url)
             self.assertContains(response, past_question.question_text)
 
-Ideas for more tests
+对进一步进行测试的想法
 --------------------
 
-We ought to add a similar ``get_queryset`` method to ``ResultsView`` and
-create a new test class for that view. It'll be very similar to what we have
-just created; in fact there will be a lot of repetition.
+我们可以为``结果视图``增加一个类似的 ``get_queryset`` 方法，并且为它创建一个测试类。它与我们刚才创建的非常类似；实际上有很多地方都是重复的。
 
-We could also improve our application in other ways, adding tests along the
-way. For example, it's silly that ``Questions`` can be published on the site
-that have no ``Choices``. So, our views could check for this, and exclude such
-``Questions``. Our tests would create a ``Question`` without ``Choices`` and
-then test that it's not published, as well as create a similar ``Question``
-*with* ``Choices``, and test that it *is* published.
+我们也可以通过多张方式改进我们的应用程序，同时增加对应的测试。例如，即使我们的 ``问题`` 没有 ``选项`` 依然可以发布。所以，我们的视图可以对这种情况进行检查，并将这些``问题``排除在外。 我们的测试将创建一个没有``选项``的``问题``然后测试它是否不能成功发布，同事也会创建一个类似的``问题``它是*有*``选项``的，然后测试*它*可以正常发布。
 
-Perhaps logged-in admin users should be allowed to see unpublished
-``Questions``, but not ordinary visitors. Again: whatever needs to be added to
-the software to accomplish this should be accompanied by a test, whether you
-write the test first and then make the code pass the test, or work out the
-logic in your code first and then write a test to prove it.
+或许管理员用户登录之后应当被允许看到未发布的``问题``，但是不同用户不行。再次提醒，任何所做的修改都应当有对应的测试，不论你是否是显现测试然后再编码通过测试，或先完成你的代码载编写测试验证它。
 
-At a certain point you are bound to look at your tests and wonder whether your
-code is suffering from test bloat, which brings us to:
+在某个时刻你将不得不注意到你的测试，并希望了解你的代码是否因为写了很多的测试而变得困哪，这个问题将引导我们进入下一个问题：
 
-When testing, more is better
+何时测试，测试越多就越好么
 ============================
 
 It might seem that our tests are growing out of control. At this rate there will
