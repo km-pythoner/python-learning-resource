@@ -474,29 +474,20 @@ Django 提供了一个测试类 :class:`~django.test.Client` 可以通过编写�
 何时测试，测试越多就越好么
 ============================
 
-It might seem that our tests are growing out of control. At this rate there will
-soon be more code in our tests than in our application, and the repetition
-is unaesthetic, compared to the elegant conciseness of the rest of our code.
+越写越多的测试，看起来似乎是失控了。按照这个速率我们用户测试的代码很快就会超过为首先功能所写的代码，并且这些重复的工作也是不优雅的，相对于我们简介优雅的实现功能的那些代码来说。
 
-**It doesn't matter**. Let them grow. For the most part, you can write a test
-once and then forget about it. It will continue performing its useful function
-as you continue to develop your program.
+**没关系**。就让它们膨胀吧。大部分情况，你可以编写一个测试然后就忘了它。在你后续的开发过程中它都会持续的发挥作用。
 
-Sometimes tests will need to be updated. Suppose that we amend our views so that
-only ``Questions`` with ``Choices`` are published. In that case, many of our
-existing tests will fail - *telling us exactly which tests need to be amended to
-bring them up to date*, so to that extent tests help look after themselves.
+有的时候测试本身也需要更新。为了应对我们对视图的修改，这样才能只让那些具有``选项``的``问题``发布。在这种情况下，很多我们已经编写好的测试都将失败-*这让我们明白那些测试需要修正*，所以这部分测试帮助我们定位到它们自己。
 
-At worst, as you continue developing, you might find that you have some tests
-that are now redundant. Even that's not a problem; in testing redundancy is
-a *good* thing.
+糟糕的情况下，你继续开发，然后发现你的有些测试变得多余了。这不会成为阻碍；对测试来说荣誉是*好*的。
 
-As long as your tests are sensibly arranged, they won't become unmanageable.
-Good rules-of-thumb include having:
+只要你的测试被合理的安排，它们就不会难易维护。
+后的实践准则包含以下几条：Good rules-of-thumb include having:
 
-* a separate ``TestClass`` for each model or view
-* a separate test method for each set of conditions you want to test
-* test method names that describe their function
+* 为每个模型或试图分别编写``测试类``
+* 为你想测试的每一组测试条件分别编写测试方法
+* 测试方法的名字最好能够说明他的功能
 
 Further testing
 ===============
