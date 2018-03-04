@@ -489,46 +489,28 @@ Django 提供了一个测试类 :class:`~django.test.Client` 可以通过编写�
 * 为你想测试的每一组测试条件分别编写测试方法
 * 测试方法的名字最好能够说明他的功能
 
-Further testing
+更深入的测试
 ===============
 
-This tutorial only introduces some of the basics of testing. There's a great
-deal more you can do, and a number of very useful tools at your disposal to
-achieve some very clever things.
+这个教程只是介绍了一些测试的基础。你愿意深入的话还有很多东西可以做，并且可以找到大量的有用的工具，帮助你做很多事情。
 
-For example, while our tests here have covered some of the internal logic of a
-model and the way our views publish information, you can use an "in-browser"
-framework such as Selenium_ to test the way your HTML actually renders in a
-browser. These tools allow you to check not just the behavior of your Django
-code, but also, for example, of your JavaScript. It's quite something to see
-the tests launch a browser, and start interacting with your site, as if a human
-being were driving it! Django includes :class:`~django.test.LiveServerTestCase`
-to facilitate integration with tools like Selenium.
+例如，我们的测试覆盖了一些模型的内部逻辑以及一些视图上展现的信息，你可以使用一个"內建浏览器"的框架就像 Selenium 来加测 HTML 最终在浏览器中的渲染效果。这些工具让你能够不仅仅测试 Django 代码的行为，并且能够测试其他的部分，例如 JavaScript。测试能够启动一个浏览器，然后像一个真实的用户那样和你做的网站交互是很重要的。 Django 包含了 :class:`~django.test.LiveServerTestCase` 类以便于整合像 Selenium 这类的工具。
 
-If you have a complex application, you may want to run tests automatically
-with every commit for the purposes of `continuous integration`_, so that
-quality control is itself - at least partially - automated.
+如果你做了一个很复杂的应用，你肯定希望能够在每次提交代码时自动运行这些测试，以实现`持续集成`_，所以质量控制的最后一个部分就是自己能够自动的运行测试。
 
-A good way to spot untested parts of your application is to check code
-coverage. This also helps identify fragile or even dead code. If you can't test
-a piece of code, it usually means that code should be refactored or removed.
-Coverage will help to identify dead code. See
-:ref:`topics-testing-code-coverage` for details.
+检查你的应用中那些部分没有经过测试的一个好方法是查看代码覆盖率。这也能够辅助定位脆弱代码和多余代码。如果一段代码你不能测试，这通常意味着你应该重构它或者删除它。覆盖率可以识别多余代码。查看
+:ref:`topics-testing-code-coverage` 可以获得更多的详情。
 
-:doc:`Testing in Django </topics/testing/index>` has comprehensive
-information about testing.
+:doc:`Testing in Django </topics/testing/index>` 有关于测试的一些更全面、深入的信息。
 
 .. _Selenium: http://seleniumhq.org/
-.. _continuous integration: https://en.wikipedia.org/wiki/Continuous_integration
+.. _持续集成: https://en.wikipedia.org/wiki/Continuous_integration
 
 What's next?
 ============
 
-For full details on testing, see :doc:`Testing in Django
-</topics/testing/index>`.
+查看 :doc:`Testing in Django </topics/testing/index>` 可湖区关于测试的完整、详细的信息。
 
-When you're comfortable with testing Django views, read
-:doc:`part 6 of this tutorial</intro/tutorial06>` to learn about
-static files management.
+当你适应了测试 Django 的视图，可以阅读 :doc:`part 6 of this tutorial</intro/tutorial06>` 来学习静态文件的管理。
 
 ~~~~~~~~~~~~~~~~~~~~~~~~
